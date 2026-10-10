@@ -1,0 +1,111 @@
+site_name: "Machine Learning Practice (MLP)"
+site_description: "Practical documentation, code snippets, and reference guides for Python Machine Learning libraries."
+site_author: "Course Instructor"
+repo_name: "MLP_Course"
+repo_url: ""
+
+theme:
+  name: material
+  language: en
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.snippets
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Environment Setup: getting-started/environment-setup.md
+      - Quickstart Cheatsheet: getting-started/quickstart-cheatsheet.md
+  - NumPy:
+      - Overview & Core Concepts: libraries/numpy/index.md
+      - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md
+      - Vectorization & Math: libraries/numpy/vectorization-math.md
+  - Pandas:
+      - Series & DataFrames: libraries/pandas/index.md
+      - Data Cleaning & Filtering: libraries/pandas/data-cleaning.md
+      - Aggregations & Merging: libraries/pandas/manipulation.md
+  - Visualization:
+      - Matplotlib (OO Interface): libraries/visualization/matplotlib.md
+      - Seaborn (Statistical Plots): libraries/visualization/seaborn.md
+  - Scikit-Learn:
+      - The Estimator API Design: libraries/scikit-learn/index.md
+      - Preprocessing & Encoders: libraries/scikit-learn/preprocessing.md
+      - Pipelines & ColumnTransformers: libraries/scikit-learn/pipelines.md
+      - Models & Estimators: libraries/scikit-learn/models.md
+      - Model Evaluation & Tuning: libraries/scikit-learn/evaluation-tuning.md
+  - Practical Workflows:
+      - EDA Checklist: workflows/eda-checklist.md
+      - End-to-End ML Pipeline: workflows/end-to-end-ml.md
+  - Student Resources:
+      - Top 10 Common Mistakes: resources/common-errors.md
+      - Official Docs & Cheatsheets: resources/external-links.md
