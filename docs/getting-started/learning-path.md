@@ -33,7 +33,7 @@ From a business question to a monitored model, in the order real projects go.
 | 1 | [Problem framing and success metrics](../lifecycle/01-problem-framing.ipynb) | Available |
 | 2 | [Data acquisition and validation](../lifecycle/02-data-validation.ipynb) | Available |
 | 3 | [Cleaning](../lifecycle/03-cleaning.ipynb) | Available |
-| 4 | Exploratory analysis, with interpretation | Planned |
+| 4 | [Exploratory analysis, with interpretation](../lifecycle/04-eda.ipynb) | Available |
 | 5 | Splitting strategy: random, grouped, time-based | Planned |
 | 6 | Baselines | Planned |
 | 7 | Feature engineering | Planned |
