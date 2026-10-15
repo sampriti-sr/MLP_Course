@@ -94,6 +94,8 @@ plugins:
 nav:
   - Home: index.md
   - Getting Started:
+      - How to Use This Site: getting-started/how-to-use.md
+      - Learning Path: getting-started/learning-path.md
       - The Datasets: getting-started/datasets.ipynb
       - Environment Setup: getting-started/environment-setup.md
       - Quickstart Cheatsheet: getting-started/quickstart-cheatsheet.md
