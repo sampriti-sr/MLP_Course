@@ -106,6 +106,7 @@ nav:
       - 4. Exploratory Analysis: lifecycle/04-eda.ipynb
       - 5. Splitting Strategy: lifecycle/05-splitting.ipynb
       - 6. Baselines: lifecycle/06-baselines.ipynb
+      - 7. Feature Engineering: lifecycle/07-features.ipynb
   - NumPy:
       - Overview & Core Concepts: libraries/numpy/index.md
       - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md
