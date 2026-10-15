@@ -37,7 +37,7 @@ From a business question to a monitored model, in the order real projects go.
 | 5 | [Splitting strategy: random, grouped, time-based](../lifecycle/05-splitting.ipynb) | Available |
 | 6 | [Baselines](../lifecycle/06-baselines.ipynb) | Available |
 | 7 | [Feature engineering](../lifecycle/07-features.ipynb) | Available |
-| 8 | Modelling | Planned |
+| 8 | [Modelling](../lifecycle/08-modelling.ipynb) | Available |
 | 9 | Evaluation and error analysis | Planned |
 | 10 | Tuning and experiment tracking | Planned |
 | 11 | Interpretation and fairness | Planned |
