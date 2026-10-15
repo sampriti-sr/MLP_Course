@@ -99,6 +99,8 @@ nav:
       - The Datasets: getting-started/datasets.ipynb
       - Environment Setup: getting-started/environment-setup.md
       - Quickstart Cheatsheet: getting-started/quickstart-cheatsheet.md
+  - Lifecycle:
+      - 1. Problem Framing: lifecycle/01-problem-framing.ipynb
   - NumPy:
       - Overview & Core Concepts: libraries/numpy/index.md
       - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md

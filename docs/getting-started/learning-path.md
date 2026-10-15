@@ -30,7 +30,7 @@ From a business question to a monitored model, in the order real projects go.
 
 | Step | Topic | Status |
 |---|---|---|
-| 1 | Problem framing and success metrics | Planned |
+| 1 | [Problem framing and success metrics](../lifecycle/01-problem-framing.ipynb) | Available |
 | 2 | Data acquisition and validation | Planned |
 | 3 | Cleaning | Planned |
 | 4 | Exploratory analysis, with interpretation | Planned |
