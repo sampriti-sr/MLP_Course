@@ -3,6 +3,7 @@
 >>> from mlp_data import load_retail
 >>> df = load_retail()
 """
+from . import retail
 from ._download import data_dir
 from .loaders import (
     DATASETS,
@@ -15,7 +16,7 @@ from .loaders import (
 )
 
 __all__ = [
-    "DATASETS", "MovieLens", "data_dir",
+    "DATASETS", "MovieLens", "data_dir", "retail",
     "load_airbnb", "load_credit", "load_movielens", "load_retail", "load_taxi",
 ]
 __version__ = "0.1.0"

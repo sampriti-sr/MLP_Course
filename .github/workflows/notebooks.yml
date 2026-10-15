@@ -38,6 +38,9 @@ jobs:
           path: ~/.cache/mlp_course
           key: mlp-data-${{ hashFiles('mlp_data/loaders.py') }}
 
+      - name: Unit tests (offline)
+        run: pytest -q
+
       - name: Lint notebooks (badge, setup cell, executed)
         run: python tools/execute_notebooks.py --lint
 
