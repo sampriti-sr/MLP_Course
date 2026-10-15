@@ -30,6 +30,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
   - 34,335 exact duplicate rows.
   - 5,477 non-product `StockCode` rows (`POST`, `M`, `D`, `ADJUST`, `AMAZONFEE`, …).
   - **Mixed dtypes:** `Invoice`, `StockCode` and `Description` contain both ints and strings, so writing to parquet fails unless columns are cast. The loader casts text columns to pandas `string`.
+  - **Orders cancelled almost immediately:** 142 invoices (0.39%), carrying about 2.2% of sales revenue, are fully reversed by a cancellation within a day, including a GBP 77,184 order cancelled sixteen minutes later. They do not change any "bought again" label but they inflate spend, and with it any value-ranked list. `mlp_data.retail.clean_retail` nets each such purchase and its cancellation out (cleaning step 6).
 - **Practicalities:** reading the xlsx takes ~35 s, so the loader caches a parquet copy (~7 MB).
 
 ### `movielens`: MovieLens small

@@ -26,6 +26,10 @@ flowchart LR
 
 <div class="grid-cards">
   <div class="card">
+    <h3><a href="lifecycle/01-problem-framing/">🔁 The ML Lifecycle (new)</a></h3>
+    <p>One real project, start to finish: framing, validation, cleaning, splitting, baselines, features, modelling, tuning, fairness, serving, monitoring and reproducibility, on real retail data with every claim checked in code.</p>
+  </div>
+  <div class="card">
     <h3><a href="libraries/numpy/">⚡ NumPy Reference</a></h3>
     <p>High-performance n-dimensional array computing, memory layouts, vectorized arithmetic, broadcasting mechanics, and linear algebra operations.</p>
   </div>

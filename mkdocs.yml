@@ -99,6 +99,21 @@ nav:
       - The Datasets: getting-started/datasets.ipynb
       - Environment Setup: getting-started/environment-setup.md
       - Quickstart Cheatsheet: getting-started/quickstart-cheatsheet.md
+  - Lifecycle:
+      - 1. Problem Framing: lifecycle/01-problem-framing.ipynb
+      - 2. Data Validation: lifecycle/02-data-validation.ipynb
+      - 3. Cleaning: lifecycle/03-cleaning.ipynb
+      - 4. Exploratory Analysis: lifecycle/04-eda.ipynb
+      - 5. Splitting Strategy: lifecycle/05-splitting.ipynb
+      - 6. Baselines: lifecycle/06-baselines.ipynb
+      - 7. Feature Engineering: lifecycle/07-features.ipynb
+      - 8. Modelling: lifecycle/08-modelling.ipynb
+      - 9. Evaluation and Error Analysis: lifecycle/09-evaluation.ipynb
+      - 10. Tuning and Experiment Tracking: lifecycle/10-tuning.ipynb
+      - 11. Interpretation and Fairness: lifecycle/11-interpretation.ipynb
+      - 12. Packaging and Serving: lifecycle/12-serving.ipynb
+      - 13. Monitoring and Drift: lifecycle/13-monitoring.ipynb
+      - 14. Reproducibility and Hygiene: lifecycle/14-reproducibility.ipynb
   - NumPy:
       - Overview & Core Concepts: libraries/numpy/index.md
       - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md

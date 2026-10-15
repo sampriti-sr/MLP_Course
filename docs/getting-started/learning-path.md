@@ -30,20 +30,20 @@ From a business question to a monitored model, in the order real projects go.
 
 | Step | Topic | Status |
 |---|---|---|
-| 1 | Problem framing and success metrics | Planned |
-| 2 | Data acquisition and validation | Planned |
-| 3 | Cleaning | Planned |
-| 4 | Exploratory analysis, with interpretation | Planned |
-| 5 | Splitting strategy: random, grouped, time-based | Planned |
-| 6 | Baselines | Planned |
-| 7 | Feature engineering | Planned |
-| 8 | Modelling | Planned |
-| 9 | Evaluation and error analysis | Planned |
-| 10 | Tuning and experiment tracking | Planned |
-| 11 | Interpretation and fairness | Planned |
-| 12 | Packaging and serving | Planned |
-| 13 | Monitoring and drift | Planned |
-| 14 | Reproducibility and project hygiene | Planned |
+| 1 | [Problem framing and success metrics](../lifecycle/01-problem-framing.ipynb) | Available |
+| 2 | [Data acquisition and validation](../lifecycle/02-data-validation.ipynb) | Available |
+| 3 | [Cleaning](../lifecycle/03-cleaning.ipynb) | Available |
+| 4 | [Exploratory analysis, with interpretation](../lifecycle/04-eda.ipynb) | Available |
+| 5 | [Splitting strategy: random, grouped, time-based](../lifecycle/05-splitting.ipynb) | Available |
+| 6 | [Baselines](../lifecycle/06-baselines.ipynb) | Available |
+| 7 | [Feature engineering](../lifecycle/07-features.ipynb) | Available |
+| 8 | [Modelling](../lifecycle/08-modelling.ipynb) | Available |
+| 9 | [Evaluation and error analysis](../lifecycle/09-evaluation.ipynb) | Available |
+| 10 | [Tuning and experiment tracking](../lifecycle/10-tuning.ipynb) | Available |
+| 11 | [Interpretation and fairness](../lifecycle/11-interpretation.ipynb) | Available |
+| 12 | [Packaging and serving](../lifecycle/12-serving.ipynb) | Available |
+| 13 | [Monitoring and drift](../lifecycle/13-monitoring.ipynb) | Available |
+| 14 | [Reproducibility and project hygiene](../lifecycle/14-reproducibility.ipynb) | Available |
 
 **Ready to move on when** you can take a raw table and a business question and produce an evaluated, honestly-split model, and explain every decision you made on the way.
 
