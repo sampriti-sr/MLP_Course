@@ -12,6 +12,31 @@
 | Notebooks | Downloadable / "Open in Colab" for every page |
 | Workflow | Work on a branch of `sampriti-sr/MLP_Course` (we have write access); **one commit per task**; no merge to `main` without review |
 
+## Progress
+
+| Phase | Status | Notes |
+|---|---|---|
+| 0. Quick fixes | **Not started** | polyfill.io is still in `mkdocs.yml`; repo URL, README and CSS fixes pending. `mkdocs<2` pin was pulled forward into Phase 1. |
+| 1. Foundations | **Done** (branch `kshitij-variant`) | See below. |
+| 2-7 | Not started | |
+
+**Phase 1 outcomes**
+
+| Task | Result |
+|---|---|
+| 1.1 Dataset audit | `data/README.md`: all five candidates verified (URL, licence, size, schema, quality claims, checksums). Open items: TLC states no licence; Airbnb snapshots rotate. |
+| 1.2 Loader | `mlp_data` package: one-line loaders, cache, checksum warnings, safe zip handling, certifi for macOS. Cold and warm runs tested. |
+| 1.3 Template | `templates/page-template.ipynb`, `templates/AUTHORING.md`, `tools/new_page.py`. |
+| 1.4 Notebooks + CI | Notebooks in `docs/` are the pages (mkdocs-jupyter). `tools/execute_notebooks.py` lints and runs them; `.github/workflows/notebooks.yml` runs it on every push/PR. Notebooks tested on pandas 2.3 and 3.0. |
+| 1.5 Orientation pages | "How to use this site", "Learning path", and the first real page, "The Datasets". |
+
+**Design decisions made during Phase 1 (they change later phases)**
+
+- **Notebooks are the pages**, not companions to Markdown pages. A spike showed notebook Markdown is rendered by nbconvert, so Material's `!!!`, `???` and `===` do not work in notebooks. Pages use HTML callouts and `<details>` instead (verified in a browser). Tabs are not available in notebooks. The older `.md` reference pages are unaffected. Details in `templates/AUTHORING.md`.
+- **MkDocs is pinned `<2`**: Material warns that MkDocs 2.0 removes the plugin system.
+- **Colab/install links name a git ref** (currently `kshitij-variant`). At merge time run `python tools/execute_notebooks.py --ref main --write-ref`.
+- Raw data is never committed; loaders download from the original publishers. A GitHub Release mirror remains an open item (Airbnb link rot, 35 s Excel parse).
+
 **Principle:** since students already know the maths, pages do **not** re-derive algorithms. Each page answers: *When do I use this? How do I apply it correctly to real data? What goes wrong in practice? How do I know it worked?* A short "Maths ↔ code" box links each equation to the line that implements it.
 
 Status key: `[ ]` not started · `[~]` in progress · `[x]` done
