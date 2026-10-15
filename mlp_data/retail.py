@@ -167,3 +167,34 @@ def make_snapshots(sales: pd.DataFrame, returns: pd.DataFrame, cutoffs, **kw) ->
         snap.insert(1, "cutoff", pd.Timestamp(c))
         parts.append(snap)
     return pd.concat(parts, ignore_index=True)
+
+
+class Splits(NamedTuple):
+    train: pd.DataFrame
+    valid: pd.DataFrame
+    test: pd.DataFrame
+
+
+def check_split_dates(data_end, *, horizon_days: int = HORIZON_DAYS) -> None:
+    """Raise unless the chronological split is leak-free.
+
+    Every label window must end before the next split begins (an "embargo" of one horizon),
+    and the last label window must end before the data does.
+    """
+    h = pd.Timedelta(days=horizon_days)
+    if max(TRAIN_CUTOFFS) + h > VALID_CUTOFF:
+        raise ValueError("training label windows run into the validation period")
+    if VALID_CUTOFF + h > TEST_CUTOFF:
+        raise ValueError("validation label windows run into the test period")
+    if TEST_CUTOFF + h > pd.Timestamp(data_end):
+        raise ValueError("test label window runs past the end of the data")
+
+
+def build_splits(sales: pd.DataFrame, returns: pd.DataFrame, *, features: str = "full") -> Splits:
+    """The course's train / validation / test snapshots, after checking they cannot leak."""
+    check_split_dates(sales["invoice_date"].max())
+    return Splits(
+        train=make_snapshots(sales, returns, TRAIN_CUTOFFS, features=features),
+        valid=make_snapshots(sales, returns, [VALID_CUTOFF], features=features),
+        test=make_snapshots(sales, returns, [TEST_CUTOFF], features=features),
+    )

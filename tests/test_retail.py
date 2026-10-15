@@ -108,3 +108,28 @@ def test_bad_feature_set_rejected():
     sales, returns = make_sales()
     with pytest.raises(ValueError):
         retail.make_snapshot(sales, returns, "2011-01-01", features="nope")
+
+
+def test_course_split_dates_are_leak_free_for_the_real_data_end():
+    retail.check_split_dates("2011-12-09")           # must not raise
+
+
+def test_split_check_rejects_overlapping_windows(monkeypatch):
+    monkeypatch.setattr(retail, "VALID_CUTOFF", pd.Timestamp("2011-04-15"))   # inside the last train window
+    with pytest.raises(ValueError, match="training label windows"):
+        retail.check_split_dates("2011-12-09")
+    monkeypatch.setattr(retail, "VALID_CUTOFF", pd.Timestamp("2011-06-01"))
+    with pytest.raises(ValueError, match="test label window"):
+        retail.check_split_dates("2011-11-15")        # data ends before the test window does
+
+
+def test_build_splits_have_identical_columns_and_disjoint_dates():
+    rows = [line(str(i), "10001", 1, d, cust=float(c))
+            for i, (c, d) in enumerate([(1, "2010-03-01"), (1, "2011-02-20"), (1, "2011-05-20"), (1, "2011-08-20"), (1, "2011-11-01"),
+                                        (2, "2010-03-01"), (2, "2011-08-25"), (2, "2011-12-05")])]   # data runs past the test window
+    rows.sort(key=lambda r: r[4])                 # the real file is time-ordered; an unsorted fixture would look like a sheet seam
+    c = retail.clean_retail(raw_frame(rows))
+    sp = retail.build_splits(c.sales, c.returns, features="full")
+    assert list(sp.train.columns) == list(sp.valid.columns) == list(sp.test.columns)
+    assert set(sp.valid["cutoff"]) == {retail.VALID_CUTOFF} and set(sp.test["cutoff"]) == {retail.TEST_CUTOFF}
+    assert sp.train["cutoff"].max() < sp.valid["cutoff"].min() < sp.test["cutoff"].min()
