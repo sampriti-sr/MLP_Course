@@ -20,3 +20,10 @@ Thumbs.db
 # IDE configuration
 .vscode/
 .idea/
+
+# Packaging
+build/
+*.egg-info/
+
+# Local data cache
+.mlp_data/
