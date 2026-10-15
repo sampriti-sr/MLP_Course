@@ -86,8 +86,8 @@ def clean_retail(raw: pd.DataFrame) -> Cleaned:
     log.append(("set aside cancellations", int(is_cancel.sum()), len(df) - int(is_cancel.sum()),
                 "kept separately as returns: they are behaviour, not purchases"))
     df = df[~is_cancel]
-    step("zero/negative quantity or price", (df["quantity"] > 0) & (df["unit_price"] > 0),
-         "stock write-offs ('damaged', 'check'), not sales")
+    step("zero price (free items)", (df["quantity"] > 0) & (df["unit_price"] > 0),
+         "gifts and samples at price 0: no revenue, not purchases")
 
     return Cleaned(
         sales=df.reset_index(drop=True),

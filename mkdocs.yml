@@ -102,6 +102,7 @@ nav:
   - Lifecycle:
       - 1. Problem Framing: lifecycle/01-problem-framing.ipynb
       - 2. Data Validation: lifecycle/02-data-validation.ipynb
+      - 3. Cleaning: lifecycle/03-cleaning.ipynb
   - NumPy:
       - Overview & Core Concepts: libraries/numpy/index.md
       - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md

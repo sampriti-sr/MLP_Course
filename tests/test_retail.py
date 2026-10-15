@@ -43,7 +43,7 @@ def test_cleaning_rules_and_row_accounting():
         line("11", "POST", 1, "2011-01-01"),                        # not a product
         line("12", "10002", 1, "2011-01-01", cust=np.nan),          # guest checkout
         line("C13", "10001", -1, "2011-01-02"),                     # return
-        line("14", "10003", -5, "2011-01-03"),                      # write-off (negative qty, no C)
+        line("14", "10003", -5, "2011-01-03"),                      # negative qty without a C invoice
         line("15", "10004", 2, "2011-01-03", price=0.0),            # free / adjustment
         line("16", "85123A", 1, "2011-01-04"),                      # letter-suffixed product is kept
     ])
