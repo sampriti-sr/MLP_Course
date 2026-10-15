@@ -105,6 +105,7 @@ nav:
       - 3. Cleaning: lifecycle/03-cleaning.ipynb
       - 4. Exploratory Analysis: lifecycle/04-eda.ipynb
       - 5. Splitting Strategy: lifecycle/05-splitting.ipynb
+      - 6. Baselines: lifecycle/06-baselines.ipynb
   - NumPy:
       - Overview & Core Concepts: libraries/numpy/index.md
       - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md

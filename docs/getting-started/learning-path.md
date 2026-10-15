@@ -35,7 +35,7 @@ From a business question to a monitored model, in the order real projects go.
 | 3 | [Cleaning](../lifecycle/03-cleaning.ipynb) | Available |
 | 4 | [Exploratory analysis, with interpretation](../lifecycle/04-eda.ipynb) | Available |
 | 5 | [Splitting strategy: random, grouped, time-based](../lifecycle/05-splitting.ipynb) | Available |
-| 6 | Baselines | Planned |
+| 6 | [Baselines](../lifecycle/06-baselines.ipynb) | Available |
 | 7 | Feature engineering | Planned |
 | 8 | Modelling | Planned |
 | 9 | Evaluation and error analysis | Planned |
