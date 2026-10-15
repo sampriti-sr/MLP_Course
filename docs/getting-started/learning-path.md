@@ -40,7 +40,7 @@ From a business question to a monitored model, in the order real projects go.
 | 8 | [Modelling](../lifecycle/08-modelling.ipynb) | Available |
 | 9 | [Evaluation and error analysis](../lifecycle/09-evaluation.ipynb) | Available |
 | 10 | [Tuning and experiment tracking](../lifecycle/10-tuning.ipynb) | Available |
-| 11 | Interpretation and fairness | Planned |
+| 11 | [Interpretation and fairness](../lifecycle/11-interpretation.ipynb) | Available |
 | 12 | Packaging and serving | Planned |
 | 13 | Monitoring and drift | Planned |
 | 14 | Reproducibility and project hygiene | Planned |

@@ -46,3 +46,12 @@ def test_overdue_cap_is_a_parameter_and_still_picklable():
     b = models.make_logistic(overdue_cap=5).fit(X[models.FEATURES], y)
     buf = io.BytesIO(); joblib.dump(b, buf); buf.seek(0)
     assert not np.allclose(a, joblib.load(buf).predict_proba(X[models.FEATURES])[:, 1])      # the cap changes the model
+
+
+def test_every_model_input_has_a_readable_name_for_interpretation():
+    X, y = toy_snapshot()
+    model = models.make_logistic().fit(X[models.FEATURES], y)
+    names = list(model[0].get_feature_names_out())
+    assert len(names) == model[-1].coef_.shape[1]                        # one name per coefficient
+    assert "tails__frequency" in names and "rest__is_uk" in names
+    assert any("missingindicator" in n for n in names)                   # the missing-value indicators are visible too

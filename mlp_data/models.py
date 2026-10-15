@@ -48,9 +48,9 @@ def feature_columns(frame) -> list[str]:
 def make_logistic(C: float = 1.0, overdue_cap: float = 50):
     """Champion: logistic regression with heavy-tail handling, imputation + missing indicators, scaling."""
     prepare = ColumnTransformer([
-        ("tails", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_log1p), StandardScaler()), HEAVY_TAILED),
-        ("ratio", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_capped_log, kw_args={"cap": overdue_cap}), StandardScaler()), RATIO),
-        ("change", make_pipeline(FunctionTransformer(_signed_log), StandardScaler()), SIGNED),
+        ("tails", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_log1p, feature_names_out="one-to-one"), StandardScaler()), HEAVY_TAILED),
+        ("ratio", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_capped_log, kw_args={"cap": overdue_cap}, feature_names_out="one-to-one"), StandardScaler()), RATIO),
+        ("change", make_pipeline(FunctionTransformer(_signed_log, feature_names_out="one-to-one"), StandardScaler()), SIGNED),
         ("rest", StandardScaler(), OTHER),
     ])
     return make_pipeline(prepare, LogisticRegression(C=C, max_iter=2000))
