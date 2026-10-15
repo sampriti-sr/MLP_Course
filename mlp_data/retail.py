@@ -42,6 +42,29 @@ class Cleaned(NamedTuple):
     log: pd.DataFrame      # row accounting: what each step removed and why
 
 
+REVERSAL_WINDOW = pd.Timedelta(days=1)   # a cancellation within a day of an identical purchase undoes it
+
+
+def fully_reversed_invoices(sales: pd.DataFrame, returns: pd.DataFrame, window: pd.Timedelta = REVERSAL_WINDOW):
+    """Find purchases that were cancelled almost immediately.
+
+    A purchase line is "reversed" when the same customer returns the same product, in the same
+    quantity, within `window` after buying it. An invoice is *fully reversed* when every product on it
+    was. Returns (invoice numbers, the matching cancellation lines as (invoice, stock_code) pairs).
+    """
+    if len(returns) == 0 or len(sales) == 0:
+        return set(), pd.DataFrame(columns=["invoice", "stock_code"])
+    r = returns.assign(qty=-returns["quantity"])
+    m = r.merge(sales[["customer_id", "stock_code", "quantity", "invoice_date", "invoice"]],
+                left_on=["customer_id", "stock_code", "qty"], right_on=["customer_id", "stock_code", "quantity"], suffixes=("_ret", "_sale"))
+    m = m[(m["invoice_date_sale"] <= m["invoice_date_ret"]) & (m["invoice_date_ret"] - m["invoice_date_sale"] <= window)]
+    products_on_invoice = sales.groupby("invoice")["stock_code"].nunique()
+    products_reversed = m.groupby("invoice_sale")["stock_code"].nunique()
+    full = products_reversed[products_reversed >= products_on_invoice.reindex(products_reversed.index)].index
+    pairs = m[m["invoice_sale"].isin(full)][["invoice_ret", "stock_code"]].drop_duplicates().rename(columns={"invoice_ret": "invoice"})
+    return set(full), pairs
+
+
 def find_sheet_boundary(raw: pd.DataFrame) -> int | None:
     """Row where the second Excel sheet starts, found from the data itself.
 
@@ -88,6 +111,17 @@ def clean_retail(raw: pd.DataFrame) -> Cleaned:
     df = df[~is_cancel]
     step("zero price (free items)", (df["quantity"] > 0) & (df["unit_price"] > 0),
          "gifts and samples at price 0: no revenue, not purchases")
+
+    # 6. A purchase cancelled within a day is not a purchase. Net the pair out, so it neither counts as
+    #    "bought again" nor inflates spend (one such order was worth GBP 77,000 and ranked a customer #1).
+    reversed_ids, pairs = fully_reversed_invoices(df, returns)
+    sales_before, returns_before = len(df), len(returns)
+    df = df[~df["invoice"].isin(reversed_ids)]
+    matched = returns.merge(pairs.assign(_hit=True), on=["invoice", "stock_code"], how="left")["_hit"].fillna(False).to_numpy(dtype=bool)
+    returns = returns[~matched]
+    removed = (sales_before - len(df)) + (returns_before - len(returns))
+    log.append(("orders cancelled within a day", removed, len(df),
+                "purchase and its cancellation netted out: neither is behaviour that happened"))
 
     return Cleaned(
         sales=df.reset_index(drop=True),

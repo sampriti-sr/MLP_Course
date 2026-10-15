@@ -133,3 +133,40 @@ def test_build_splits_have_identical_columns_and_disjoint_dates():
     assert list(sp.train.columns) == list(sp.valid.columns) == list(sp.test.columns)
     assert set(sp.valid["cutoff"]) == {retail.VALID_CUTOFF} and set(sp.test["cutoff"]) == {retail.TEST_CUTOFF}
     assert sp.train["cutoff"].max() < sp.valid["cutoff"].min() < sp.test["cutoff"].min()
+
+
+def _clean(rows):
+    return retail.clean_retail(raw_frame(sorted(rows, key=lambda r: r[4])))
+
+
+def test_fully_cancelled_order_is_netted_out_of_sales_and_returns():
+    c = _clean([
+        line("1", "10001", 5, "2011-01-10 10:00", price=2.0, cust=1),                  # genuine purchase
+        line("2", "10002", 100, "2011-01-11 09:00", price=10.0, cust=1),               # huge order ...
+        line("C3", "10002", -100, "2011-01-11 09:16", price=10.0, cust=1),             # ... cancelled 16 minutes later
+    ])
+    assert c.sales["invoice"].tolist() == ["1"]                                        # the cancelled order is not a purchase
+    assert len(c.returns) == 0                                                         # and its cancellation is not a "return" either
+    assert c.log.set_index("step").loc["orders cancelled within a day", "rows_removed"] == 2
+
+
+def test_partial_cancellation_and_late_cancellation_are_kept():
+    c = _clean([
+        line("1", "10001", 5, "2011-01-10 10:00", cust=1), line("1", "10002", 3, "2011-01-10 10:00", cust=1),   # two products
+        line("C2", "10001", -5, "2011-01-10 12:00", cust=1),                                                    # only ONE of them cancelled
+        line("3", "10003", 4, "2011-02-01 10:00", cust=2),
+        line("C4", "10003", -4, "2011-02-20 10:00", cust=2),                                                    # cancelled 19 days later
+    ])
+    assert sorted(c.sales["invoice"]) == ["1", "1", "3"]                               # invoice 1 survives (partly reversed), invoice 3 survives
+    assert sorted(c.returns["invoice"]) == ["C2", "C4"]                                # both cancellations remain as returns
+
+
+def test_ledger_still_reconciles_to_the_raw_row_count():
+    raw = raw_frame(sorted([
+        line("1", "10001", 5, "2011-01-10 10:00"), line("2", "10002", 100, "2011-01-11 09:00"),
+        line("C3", "10002", -100, "2011-01-11 09:16"), line("4", "POST", 1, "2011-01-12 09:00"),
+        line("5", "10001", 2, "2011-01-13 09:00", cust=np.nan), line("C6", "10001", -2, "2011-02-13 09:00"),
+    ], key=lambda r: r[4]))
+    c = retail.clean_retail(raw)
+    removed = c.log[c.log["step"] != "set aside cancellations"]["rows_removed"].sum()
+    assert len(raw) == len(c.sales) + len(c.returns) + removed
