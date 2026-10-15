@@ -27,3 +27,6 @@ build/
 
 # Local data cache
 .mlp_data/
+
+# mkdocs-jupyter / plugin build cache
+.cache/

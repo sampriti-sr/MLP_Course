@@ -78,12 +78,23 @@ markdown_extensions:
       generic: true
 
 extra_javascript:
+  - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocs-jupyter:
+      # Notebooks in docs/ are pages. Outputs are saved in the files by tools/execute_notebooks.py,
+      # so the site build never runs code.
+      execute: false
+      include_source: true
+      ignore_h1_titles: true
 
 nav:
   - Home: index.md
   - Getting Started:
+      - The Datasets: getting-started/datasets.ipynb
       - Environment Setup: getting-started/environment-setup.md
       - Quickstart Cheatsheet: getting-started/quickstart-cheatsheet.md
   - NumPy:

@@ -1,0 +1,48 @@
+name: Check notebooks and site
+
+# The notebooks in docs/ are the course pages. This workflow makes sure every snippet still runs
+# on a clean machine and that the site still builds, so a broken example cannot be merged.
+on:
+  pull_request:
+  push:
+    branches-ignore: [main, master]   # main is covered by deploy.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notebooks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-notebooks.txt
+            pyproject.toml
+
+      - name: Install
+        run: pip install -r requirements-notebooks.txt
+
+      # Datasets are cached between runs so CI does not re-download ~150 MB every time.
+      # The key changes when the pinned sources change.
+      - name: Cache course datasets
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mlp_course
+          key: mlp-data-${{ hashFiles('mlp_data/loaders.py') }}
+
+      - name: Lint notebooks (badge, setup cell, executed)
+        run: python tools/execute_notebooks.py --lint
+
+      - name: Execute every notebook from scratch
+        run: python tools/execute_notebooks.py --check
+
+      - name: Build the site
+        run: mkdocs build
