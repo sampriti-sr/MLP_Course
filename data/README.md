@@ -35,7 +35,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 ### `movielens`: MovieLens small
 - **Source:** <https://grouplens.org/datasets/movielens/latest/> · `https://files.grouplens.org/datasets/movielens/ml-latest-small.zip`
 - **Terms:** may redistribute (including transformations) under the same conditions; **no commercial or revenue-bearing use** without GroupLens permission; must cite Harper & Konstan (2015), *The MovieLens Datasets: History and Context*, ACM TiiS 5(4).
-- **Contents:** `ratings` (userId, movieId, rating, timestamp), `movies`, `links`, `tags`. 610 users, 9,742 movies, **98.3 % sparse**; every user has ≥ 20 ratings (median 70.5).
+- **Contents:** `ratings` (userId, movieId, rating, timestamp), `movies`, `links`, `tags`. 610 users; 9,742 movies in the catalogue but only **9,724 have ratings**; **98.3 % sparse**; every user has ≥ 20 ratings (median 70.5).
 - **Implication:** the non-commercial clause means this course must stay free/educational; flag if that ever changes. The "small" snapshot is dated 2018-09 and is stable, but `latest-small` is an alias. Pin by checksum.
 
 ### `taxi`: NYC TLC Yellow Taxi
