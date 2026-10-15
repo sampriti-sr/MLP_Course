@@ -43,7 +43,7 @@ From a business question to a monitored model, in the order real projects go.
 | 11 | [Interpretation and fairness](../lifecycle/11-interpretation.ipynb) | Available |
 | 12 | [Packaging and serving](../lifecycle/12-serving.ipynb) | Available |
 | 13 | [Monitoring and drift](../lifecycle/13-monitoring.ipynb) | Available |
-| 14 | Reproducibility and project hygiene | Planned |
+| 14 | [Reproducibility and project hygiene](../lifecycle/14-reproducibility.ipynb) | Available |
 
 **Ready to move on when** you can take a raw table and a business question and produce an evaluated, honestly-split model, and explain every decision you made on the way.
 

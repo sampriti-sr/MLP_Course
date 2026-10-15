@@ -18,7 +18,8 @@
 |---|---|---|
 | 0. Quick fixes | **Not started** | polyfill.io is still in `mkdocs.yml`; repo URL, README and CSS fixes pending. `mkdocs<2` pin was pulled forward into Phase 1. |
 | 1. Foundations | **Done** (branch `kshitij-variant`) | See below. |
-| 2-7 | Not started | |
+| 2. Lifecycle (Part A) | **Done** (14 pages) | See below. |
+| 3-7 | Not started | Phase 3 (reference pages on real data), Part D (time series), Part E (recommenders), exercises/projects, release. |
 
 **Phase 1 outcomes**
 
@@ -29,6 +30,21 @@
 | 1.3 Template | `templates/page-template.ipynb`, `templates/AUTHORING.md`, `tools/new_page.py`. |
 | 1.4 Notebooks + CI | Notebooks in `docs/` are the pages (mkdocs-jupyter). `tools/execute_notebooks.py` lints and runs them; `.github/workflows/notebooks.yml` runs it on every push/PR. Notebooks tested on pandas 2.3 and 3.0. |
 | 1.5 Orientation pages | "How to use this site", "Learning path", and the first real page, "The Datasets". |
+
+**Phase 2 outcomes (Part A, the lifecycle on the retail data)**
+
+Fourteen executed, tested notebooks in `docs/lifecycle/`, one running project ("which customers will buy again in the next 90 days?"), each page ending in exercises with hidden answers. Supporting, tested code: `mlp_data.retail` (cleaning, snapshots, splits), `metrics`, `models`, `tracking`, `serving`, `pipeline`, `style` (45 offline unit tests).
+
+What the real data taught (all asserted in the notebooks, not just stated):
+
+- The 34,335 "duplicates" are 22,523 overlap rows (two Excel sheets overlapping) plus 11,812 genuine repeats.
+- Random splits flatter a *flexible* model on rich features by ~+0.07 AUC; a simple model barely notices.
+- The accuracy-optimised rankings protected *less* revenue than random calling; the decision rule mattered far more than the model.
+- Extra features and tuning added almost nothing; no model was distinguishable from another on money.
+- The test verdict: ranking held, probabilities collapsed (predicted 32%, actual 50%) in the autumn peak; the model is only on par with a free rule.
+- Monitoring: input drift (PSI) did not see the shift; an early 30-day partial-label rate did, ~60 days before the full outcome.
+
+**A defect found late, and fixed at the source.** Reading the final call list showed rank 1 was a customer whose GBP 77k order had been cancelled sixteen minutes later. Page 3 had tested only whether such orders flipped labels (they did not) and called them harmless; they distort *spend*, which a value-ranked list depends on. Fixed in `clean_retail` (step 6, with tests), and every page re-run and its prose corrected where a conclusion moved (the extra features' money gain and boosting's edge over the forest both disappeared; the model's lead over the rule shrank to "not demonstrable"). Lesson recorded on Page 3: *test a cleaning decision against every way the data is used.*
 
 **Design decisions made during Phase 1 (they change later phases)**
 
