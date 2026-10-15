@@ -33,8 +33,8 @@ def _signed_log(x):
     return np.sign(x) * np.log1p(np.abs(x))
 
 
-def _capped_log(x):
-    return np.log1p(np.clip(x, 0, 50))     # the overdue ratio can explode: cap, then log
+def _capped_log(x, cap=50):
+    return np.log1p(np.clip(x, 0, cap))     # the overdue ratio can explode: cap, then log
 
 
 def feature_columns(frame) -> list[str]:
@@ -45,11 +45,11 @@ def feature_columns(frame) -> list[str]:
     return FEATURES
 
 
-def make_logistic(C: float = 1.0):
+def make_logistic(C: float = 1.0, overdue_cap: float = 50):
     """Champion: logistic regression with heavy-tail handling, imputation + missing indicators, scaling."""
     prepare = ColumnTransformer([
         ("tails", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_log1p), StandardScaler()), HEAVY_TAILED),
-        ("ratio", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_capped_log), StandardScaler()), RATIO),
+        ("ratio", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), FunctionTransformer(_capped_log, kw_args={"cap": overdue_cap}), StandardScaler()), RATIO),
         ("change", make_pipeline(FunctionTransformer(_signed_log), StandardScaler()), SIGNED),
         ("rest", StandardScaler(), OTHER),
     ])

@@ -109,6 +109,7 @@ nav:
       - 7. Feature Engineering: lifecycle/07-features.ipynb
       - 8. Modelling: lifecycle/08-modelling.ipynb
       - 9. Evaluation and Error Analysis: lifecycle/09-evaluation.ipynb
+      - 10. Tuning and Experiment Tracking: lifecycle/10-tuning.ipynb
   - NumPy:
       - Overview & Core Concepts: libraries/numpy/index.md
       - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md

@@ -38,3 +38,11 @@ def test_missing_feature_is_reported_by_name():
     import pytest
     with pytest.raises(KeyError, match="frequency"):
         models.feature_columns(pd.DataFrame({"recency_days": [1.0]}))
+
+
+def test_overdue_cap_is_a_parameter_and_still_picklable():
+    X, y = toy_snapshot()
+    a = models.make_logistic(overdue_cap=50).fit(X[models.FEATURES], y).predict_proba(X[models.FEATURES])[:, 1]
+    b = models.make_logistic(overdue_cap=5).fit(X[models.FEATURES], y)
+    buf = io.BytesIO(); joblib.dump(b, buf); buf.seek(0)
+    assert not np.allclose(a, joblib.load(buf).predict_proba(X[models.FEATURES])[:, 1])      # the cap changes the model
