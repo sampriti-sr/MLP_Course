@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlp-course"
+version = "0.1.0"
+description = "Dataset loaders for the Machine Learning Practice (MLP) course"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=2.0",
+    "pyarrow>=14",
+    "openpyxl>=3.1",   # .xlsx (Online Retail II)
+    "xlrd>=2.0.1",     # .xls  (credit default)
+    "certifi",         # CA bundle: python.org builds on macOS lack system certificates
+]
+
+[tool.setuptools]
+packages = ["mlp_data"]

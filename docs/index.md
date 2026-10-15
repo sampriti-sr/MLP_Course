@@ -4,6 +4,9 @@ Welcome to the **Machine Learning Practice** course reference portal. This site 
 
 Rather than memorizing syntax or searching scattered forums, use this portal to quickly look up library APIs, idiomatic code patterns, practical workflows, and real-world debugging tips.
 
+!!! tip "New here?"
+    Start with [How to use this site](getting-started/how-to-use.md), then meet the [real-world datasets](getting-started/datasets.ipynb) the whole course is built on. The [learning path](getting-started/learning-path.md) shows the order and what is coming.
+
 ---
 
 ## 🧭 Course Roadmap & Library Ecosystem

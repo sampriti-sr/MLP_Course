@@ -1,0 +1,7 @@
+# Everything needed to RUN the course notebooks and the checks in tools/execute_notebooks.py
+-r requirements.txt
+-e .
+nbclient>=0.10
+nbformat>=5.9
+ipykernel>=6.29
+matplotlib>=3.8
