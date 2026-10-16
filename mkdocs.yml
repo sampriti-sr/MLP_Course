@@ -115,9 +115,8 @@ nav:
       - 13. Monitoring and Drift: lifecycle/13-monitoring.ipynb
       - 14. Reproducibility and Hygiene: lifecycle/14-reproducibility.ipynb
   - NumPy:
-      - Overview & Core Concepts: libraries/numpy/index.md
-      - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md
-      - Vectorization & Math: libraries/numpy/vectorization-math.md
+      - Arrays and Indexing: toolkit/numpy-arrays.ipynb
+      - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
   - Pandas:
       - Series & DataFrames: libraries/pandas/index.md
       - Data Cleaning & Filtering: libraries/pandas/data-cleaning.md
