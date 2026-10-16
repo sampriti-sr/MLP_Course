@@ -48,3 +48,31 @@ def taxi_hourly(months: str | Sequence[str] = "2023-01") -> pd.Series:
     out = pd.concat(parts).sort_index()
     out.index.name = "hour"
     return out
+
+
+def taxi_hourly_by_zone(months: str | Sequence[str] = "2023-01") -> pd.DataFrame:
+    """Pickups per hour for every TLC pickup zone: rows are hours, columns are ``PULocationID``.
+
+    Same conventions as :func:`taxi_hourly` (naive local time, only the month's own trips, empty hours
+    absent); a zone with no trip in an hour has ``0`` in that cell once the hours are aligned.
+    """
+    months = [months] if isinstance(months, str) else list(months)
+    parts = []
+    for m in months:
+        start, end = _month_bounds(m)
+        cache = data_dir() / f"taxi_hourly_by_zone_{m}.parquet"
+        if cache.exists():
+            parts.append(pd.read_parquet(cache))
+            continue
+        path = fetch(_TAXI_URL.format(month=m), data_dir() / "raw" / f"yellow_tripdata_{m}.parquet",
+                     sha256=_TAXI_SHA.get(m), label=f"NYC taxi {m}")
+        t = pd.read_parquet(path, columns=["tpep_pickup_datetime", "PULocationID"])
+        t = t[(t["tpep_pickup_datetime"] >= start) & (t["tpep_pickup_datetime"] < end)]
+        counts = (t.assign(hour=t["tpep_pickup_datetime"].dt.floor("h"))
+                    .groupby(["hour", "PULocationID"]).size().unstack("PULocationID", fill_value=0).sort_index())
+        counts.columns = counts.columns.astype(int)
+        counts.to_parquet(cache)
+        parts.append(counts)
+    out = pd.concat(parts).sort_index().fillna(0).astype(int)
+    out.index.name = "hour"
+    return out

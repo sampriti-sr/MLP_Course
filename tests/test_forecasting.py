@@ -68,3 +68,8 @@ def test_score_reports_four_metrics():
     bt = pd.DataFrame({"actual": [10.0, 20.0, 30.0], "forecast": [12.0, 18.0, 30.0]})
     out = score(bt, np.arange(1, 400, 3.0), m=1)
     assert set(out) == {"MAE", "RMSE", "sMAPE", "MASE"} and out["MAE"] == pytest.approx(4 / 3)
+
+
+def test_smape_treats_zero_zero_as_perfect_and_zero_vs_positive_as_the_worst_case():
+    assert smape([0.0, 0.0], [0.0, 0.0]) == 0.0
+    assert smape([0.0], [5.0]) == 2.0

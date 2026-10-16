@@ -29,8 +29,12 @@ def mape(y, p) -> float:
 
 
 def smape(y, p) -> float:
+    """Symmetric MAPE, between 0 and 2. A step where both the actual and the forecast are 0 counts as a perfect 0."""
     y, p = np.asarray(y, float), np.asarray(p, float)
-    return float(np.mean(2 * np.abs(y - p) / (np.abs(y) + np.abs(p))))
+    denom = np.abs(y) + np.abs(p)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        terms = np.where(denom == 0, 0.0, 2 * np.abs(y - p) / denom)
+    return float(np.mean(terms))
 
 
 def mase(y, p, y_train, m: int = 1) -> float:
