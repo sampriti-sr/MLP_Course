@@ -121,6 +121,7 @@ nav:
       - 4. Classical Models: timeseries/04-classical-models.ipynb
       - 5. Machine-Learning Forecasts: timeseries/05-ml-forecasting.ipynb
       - 6. Backtesting: timeseries/06-backtesting.ipynb
+      - 7. Metrics and Prediction Intervals: timeseries/07-metrics-intervals.ipynb
   - NumPy:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
