@@ -117,6 +117,7 @@ nav:
   - Time Series:
       - 1. Time-Series Data: timeseries/01-time-series-data.ipynb
       - 2. Trend, Seasonality, Stationarity: timeseries/02-decomposition-stationarity.ipynb
+      - 3. Baselines: timeseries/03-baselines.ipynb
   - NumPy:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb

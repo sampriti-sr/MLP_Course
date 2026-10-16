@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from mlp_data.forecasting import backtest, make_features, mase, mape, rolling_origins, seasonal_naive, smape
+from mlp_data.forecasting import backtest, make_features, mase, mape, rolling_origins, score, seasonal_mean, seasonal_naive, smape
 
 
 def _series(n=96):
@@ -52,3 +52,19 @@ def test_backtest_never_shows_the_forecaster_the_future():
     out = backtest(y, fc, origins=origins, horizon=24)
     assert all(last < first for last, first in seen)
     assert out["step"].max() == 24 and len(out) == 48
+
+
+def test_seasonal_mean_averages_the_same_hour_of_previous_weeks():
+    idx = pd.date_range("2023-01-01", periods=24 * 7 * 3, freq="h")
+    y = pd.Series(np.arange(len(idx), dtype=float), index=idx)
+    horizon = pd.date_range(idx[-1] + pd.Timedelta(hours=1), periods=24, freq="h")
+    f = seasonal_mean(y, horizon, weeks=2)
+    t = horizon[0]
+    assert f[t] == (y[t - pd.Timedelta(weeks=1)] + y[t - pd.Timedelta(weeks=2)]) / 2
+    assert seasonal_mean(y, horizon, weeks=3, statistic="median")[t] == y[t - pd.Timedelta(weeks=2)]
+
+
+def test_score_reports_four_metrics():
+    bt = pd.DataFrame({"actual": [10.0, 20.0, 30.0], "forecast": [12.0, 18.0, 30.0]})
+    out = score(bt, np.arange(1, 400, 3.0), m=1)
+    assert set(out) == {"MAE", "RMSE", "sMAPE", "MASE"} and out["MAE"] == pytest.approx(4 / 3)

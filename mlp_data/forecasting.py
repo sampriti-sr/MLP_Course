@@ -52,6 +52,20 @@ def seasonal_naive(history: pd.Series, horizon_index: pd.DatetimeIndex, period: 
     return pd.Series(np.tile(last, reps)[: len(horizon_index)], index=horizon_index, name="forecast")
 
 
+def seasonal_mean(history: pd.Series, horizon_index: pd.DatetimeIndex, *, weeks: int = 4, statistic: str = "mean") -> pd.Series:
+    """Forecast each future hour with the mean (or median) of the same weekday-and-hour in the last ``weeks`` weeks.
+    Needs ``horizon_index`` to start no later than one week after the end of ``history``."""
+    stack = np.column_stack([history.reindex(horizon_index - pd.Timedelta(weeks=k)).to_numpy() for k in range(1, weeks + 1)])
+    values = np.nanmedian(stack, axis=1) if statistic == "median" else np.nanmean(stack, axis=1)
+    return pd.Series(values, index=horizon_index, name="forecast")
+
+
+def score(bt: pd.DataFrame, y_train, *, m: int = 168) -> dict:
+    """The standard scorecard for a backtest frame: MAE, RMSE, sMAPE and MASE (scaled by seasonal-naive period ``m``)."""
+    return {"MAE": mae(bt["actual"], bt["forecast"]), "RMSE": rmse(bt["actual"], bt["forecast"]),
+            "sMAPE": smape(bt["actual"], bt["forecast"]), "MASE": mase(bt["actual"], bt["forecast"], y_train, m)}
+
+
 # --- features -----------------------------------------------------------------------------------
 def make_features(y: pd.Series, *, min_lag: int, lags=(), windows=()) -> pd.DataFrame:
     """Calendar + lag + rolling features for forecasting ``min_lag`` steps ahead.
