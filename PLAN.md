@@ -19,7 +19,8 @@
 | 0. Quick fixes | **Not started** | polyfill.io is still in `mkdocs.yml`; repo URL, README and CSS fixes pending. `mkdocs<2` pin was pulled forward into Phase 1. |
 | 1. Foundations | **Done** (branch `kshitij-variant`) | See below. |
 | 2. Lifecycle (Part A) | **Done** (14 pages) | See below. |
-| 3-7 | Not started | Phase 3 (reference pages on real data), Part D (time series), Part E (recommenders), exercises/projects, release. |
+| 3. Toolkit (Parts B/C) | **Done** (12 pages) | NumPy 2, pandas 3, plotting 2, scikit-learn 6, all on real data. |
+| 4-7 | Not started | Time series (taxi), recommenders (MovieLens + retail), exercises/projects, release. |
 
 **Phase 1 outcomes**
 
@@ -43,6 +44,10 @@ What the real data taught (all asserted in the notebooks, not just stated):
 - Extra features and tuning added almost nothing; no model was distinguishable from another on money.
 - The test verdict: ranking held, probabilities collapsed (predicted 32%, actual 50%) in the autumn peak; the model is only on par with a free rule.
 - Monitoring: input drift (PSI) did not see the shift; an early 30-day partial-label rate did, ~60 days before the full outcome.
+
+**Phase 3 outcomes (the reference pages, rebuilt as 12 real-data notebooks in `docs/toolkit/`)**
+
+NumPy (taxi, retail), pandas (Airbnb, MovieLens, retail), Matplotlib and Seaborn (retail, Airbnb), scikit-learn (credit default, retail, Airbnb). Highlights from the data, each asserted or verified: a measured ~50x loop-vs-vectorised gap; 15 of 90 Airbnb columns entirely empty and missing prices that are structural (87% of gaps are unavailable listings); every perfect-5.0 movie rests on <=3 ratings; a many-to-many merge that inflates 100,836 rows to 233,213; k-NN AUC 0.65 -> 0.74 with scaling while trees do not care; feature selection outside CV scoring 0.85 on pure noise; a noise column ranked #3 by impurity importance; 82% accuracy catching only 36% of defaulters; raw-unit k-means giving a 98% cluster. The old invented-df markdown pages were deleted; the lifecycle chapter now covers the applied workflow, so these pages stay lookup-oriented with exercises.
 
 **A defect found late, and fixed at the source.** Reading the final call list showed rank 1 was a customer whose GBP 77k order had been cancelled sixteen minutes later. Page 3 had tested only whether such orders flipped labels (they did not) and called them harmless; they distort *spend*, which a value-ranked list depends on. Fixed in `clean_retail` (step 6, with tests), and every page re-run and its prose corrected where a conclusion moved (the extra features' money gain and boosting's edge over the forest both disappeared; the model's lead over the rule shrank to "not demonstrable"). Lesson recorded on Page 3: *test a cleaning decision against every way the data is used.*
 
