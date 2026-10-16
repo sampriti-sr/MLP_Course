@@ -114,6 +114,8 @@ nav:
       - 12. Packaging and Serving: lifecycle/12-serving.ipynb
       - 13. Monitoring and Drift: lifecycle/13-monitoring.ipynb
       - 14. Reproducibility and Hygiene: lifecycle/14-reproducibility.ipynb
+  - Time Series:
+      - 1. Time-Series Data: timeseries/01-time-series-data.ipynb
   - NumPy:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
