@@ -12,11 +12,11 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 
 | Key | Dataset | Track | Download size | Rows × cols | Licence | Status |
 |---|---|---|---|---|---|---|
-| `retail` | UCI Online Retail II | Lifecycle, segmentation, forecasting, recsys | 45.6 MB (xlsx in zip) | 1,067,371 × 8 | CC BY 4.0 | ✅ verified |
-| `movielens` | MovieLens `ml-latest-small` | Recommender | 1.0 MB | 100,836 ratings | GroupLens terms (non-commercial; redistribution allowed under same terms) | ✅ verified |
-| `taxi` | NYC TLC Yellow Taxi, one file per month | Time series | ~47 MB per month | 3,066,766 × 19 (2023-01) | **No licence stated** by TLC (accuracy disclaimer only) | ⚠️ see note |
-| `airbnb` | Inside Airbnb, London `listings.csv.gz`, snapshot 2026-09-17 | Messy tabular regression | 48.3 MB | 91,954 × 90 | CC BY 4.0 | ✅ verified, snapshot rotates |
-| `credit` | UCI Default of Credit Card Clients (Taiwan, 2005) | Imbalanced classification, fairness | 5.5 MB (xls in zip) | 30,000 × 25 | CC BY 4.0 | ✅ verified |
+| `retail` | UCI Online Retail II | Lifecycle, segmentation, forecasting, recsys | 45.6 MB (xlsx in zip) | 1,067,371 × 8 | CC BY 4.0 | Verified |
+| `movielens` | MovieLens `ml-latest-small` | Recommender | 1.0 MB | 100,836 ratings | GroupLens terms (non-commercial; redistribution allowed under same terms) | Verified |
+| `taxi` | NYC TLC Yellow Taxi, one file per month | Time series | ~47 MB per month | 3,066,766 × 19 (2023-01) | **No licence stated** by TLC (accuracy disclaimer only) | See note |
+| `airbnb` | Inside Airbnb, London `listings.csv.gz`, snapshot 2026-09-17 | Messy tabular regression | 48.3 MB | 91,954 × 90 | CC BY 4.0 | Verified, snapshot rotates |
+| `credit` | UCI Default of Credit Card Clients (Taiwan, 2005) | Imbalanced classification, fairness | 5.5 MB (xls in zip) | 30,000 × 25 | CC BY 4.0 | Verified |
 
 ## Per-dataset notes
 
@@ -41,7 +41,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 
 ### `taxi`: NYC TLC Yellow Taxi
 - **Source:** <https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page> · files at `https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_YYYY-MM.parquet`
-- ⚠️ **Licence:** the TLC page states that TLC makes no representations as to accuracy and publishes no licence or reuse terms. The data is also published on NYC Open Data. **Open item:** confirm the Open Data terms before we rely on this for anything other than on-demand download (we never redistribute it, which keeps us safe either way).
+- **Licence:** the TLC page states that TLC makes no representations as to accuracy and publishes no licence or reuse terms. The data is also published on NYC Open Data. **Open item:** confirm the Open Data terms before we rely on this for anything other than on-demand download (we never redistribute it, which keeps us safe either way).
 - **Verified messiness (2023-01):** 48 trips with pickup outside the month (earliest 2008-12-31); 25,049 negative `fare_amount`; 45,862 zero-distance trips; 71,743 null `passenger_count`. The TLC page warns the parquet schema may be standardised across years, so **pin the months we use** and verify columns.
 - **Verified URLs:** 2023-01, 2023-02 and 2024-01 all resolve (HTTP 200). For the time-series track (Phase 4) we also use 2023-02, 2023-03 and 2020-01 to 2020-05 (all HTTP 200; checksums below, recorded on first download, 2026-10-16). `mlp_data.timeseries.taxi_hourly` reads only the pickup-time column and caches hourly counts.
 - **Time-series facts (verified):** in 2023-01 to 2023-03 exactly one hourly slot is empty, 02:00 on 2023-03-12 (daylight-saving change; timestamps are naive local time). 2020 months shrink from 6.4 M trips (Jan) to 0.24 M (Apr).
@@ -49,7 +49,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 ### `airbnb`: Inside Airbnb, London
 - **Source:** <https://insideairbnb.com/get-the-data/> · `…/london/2026-09-17/data/listings.csv.gz`
 - **Licence:** CC BY 4.0 (stated on the site). Credit "Inside Airbnb".
-- ⚠️ **Link rot:** the site keeps only roughly the last year of snapshots, so the pinned URL **will** eventually 404. Policy: pin one snapshot per release; the loader raises a clear error pointing to the data-request page. A mirror (GitHub Release asset, permitted by CC BY with attribution) is the long-term fix; see open items.
+- **Link rot:** the site keeps only roughly the last year of snapshots, so the pinned URL **will** eventually 404. Policy: pin one snapshot per release; the loader raises a clear error pointing to the data-request page. A mirror (GitHub Release asset, permitted by CC BY with attribution) is the long-term fix; see open items.
 - **Verified messiness:** `price` is a *string* (with currency symbol) and **34.9 % null**; `review_scores_rating` 22.5 % null; 90 columns including free text (`description`, `amenities`) and coordinates.
 - **Note:** the `visualisations/listings.csv` (summary) variant returned HTTP 403 when requested directly. Use the full `data/listings.csv.gz`.
 

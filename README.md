@@ -4,16 +4,16 @@ A modern, responsive, and searchable course documentation website and reference 
 
 Built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/), this repository gives students a single, clean place to look up API references, code patterns, EDA workflows, and debugging tips across:
 
-- ⚡ **NumPy**: Vectorization, broadcasting rules, matrix math, array indexing.
-- 🐼 **Pandas**: DataFrames, cleaning missing data, types, groupby aggregations, merges.
-- 📊 **Matplotlib & Seaborn**: Object-Oriented plotting, subplots, statistical distributions, heatmaps.
-- ⚙️ **Scikit-Learn**: Estimator design, preprocessing scalers/encoders, `ColumnTransformer`, `Pipeline`, model evaluation & hyperparameter tuning.
-- 📋 **Practical Workflows**: Step-by-step EDA checklist and an end-to-end runnable tabular ML pipeline template.
-- ⚠️ **Debugging Guide**: The top 10 most common runtime errors and pitfalls with immediate fixes.
+- **NumPy**: Vectorization, broadcasting rules, matrix math, array indexing.
+- **Pandas**: DataFrames, cleaning missing data, types, groupby aggregations, merges.
+- **Matplotlib & Seaborn**: Object-Oriented plotting, subplots, statistical distributions, heatmaps.
+- **Scikit-Learn**: Estimator design, preprocessing scalers/encoders, `ColumnTransformer`, `Pipeline`, model evaluation & hyperparameter tuning.
+- **Practical Workflows**: Step-by-step EDA checklist and an end-to-end runnable tabular ML pipeline template.
+- **Debugging Guide**: The top 10 most common runtime errors and pitfalls with immediate fixes.
 
 ---
 
-## 🚀 Quickstart: Running Locally
+## Quickstart: Running Locally
 
 ### 1. Clone the repository
 ```bash
@@ -36,7 +36,7 @@ Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your web browser. Any edi
 
 ---
 
-## 🌐 Deploying to GitHub Pages (Free Hosting)
+## Deploying to GitHub Pages (Free Hosting)
 
 ### Method 1: Automatic via GitHub Actions (Recommended)
 This repository includes `.github/workflows/deploy.yml`. 
@@ -53,7 +53,7 @@ mkdocs gh-deploy
 
 ---
 
-## 📁 Repository Directory Structure
+## Repository Directory Structure
 
 ```text
 MLP_Course/
@@ -98,7 +98,7 @@ MLP_Course/
 
 ---
 
-## ✍️ Adding New Topics or Lab Assignments
+## Adding New Topics or Lab Assignments
 
 To add a new lecture or lab module:
 1. Create a new markdown file inside `docs/` (e.g., `docs/labs/lab-01-data-cleaning.md`).

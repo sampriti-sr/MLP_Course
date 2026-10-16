@@ -9,7 +9,7 @@ Rather than memorizing syntax or searching scattered forums, use this portal to 
 
 ---
 
-## 🧭 Course Roadmap & Library Ecosystem
+## :material-compass-outline:{ .mlp-icon } Course Roadmap & Library Ecosystem
 
 ```mermaid
 flowchart LR
@@ -22,46 +22,68 @@ flowchart LR
 
 ---
 
-## 📚 Core Documentation Modules
+## :material-bookshelf:{ .mlp-icon } Core Documentation Modules
 
-<div class="grid-cards">
-  <div class="card">
-    <h3><a href="lifecycle/01-problem-framing/">🔁 The ML Lifecycle (new)</a></h3>
-    <p>One real project, start to finish: framing, validation, cleaning, splitting, baselines, features, modelling, tuning, fairness, serving, monitoring and reproducibility, on real retail data with every claim checked in code.</p>
-  </div>
-  <div class="card">
-    <h3><a href="timeseries/01-time-series-data/">📈 Time Series (new)</a></h3>
-    <p>Forecast New York taxi demand: the calendar and its traps, decomposition, baselines, ETS/ARIMA, machine learning on lag features, rolling-origin backtesting, intervals, holidays and the 2020 collapse.</p>
-  </div>
-  <div class="card">
-    <h3><a href="toolkit/numpy-arrays/">⚡ NumPy Reference</a></h3>
-    <p>High-performance n-dimensional array computing, memory layouts, vectorized arithmetic, broadcasting mechanics, and linear algebra operations.</p>
-  </div>
-  <div class="card">
-    <h3><a href="toolkit/pandas-basics/">🐼 Pandas Reference</a></h3>
-    <p>DataFrames and Series, bulletproof data cleaning, handling missing values, grouped aggregations, merges, and indexing without warnings.</p>
-  </div>
-  <div class="card">
-    <h3><a href="toolkit/matplotlib/">📊 Data Visualization</a></h3>
-    <p>Mastering Matplotlib's Object-Oriented interface alongside Seaborn's high-level statistical plots (distributions, pairplots, correlation heatmaps).</p>
-  </div>
-  <div class="card">
-    <h3><a href="toolkit/sklearn-api/">⚙️ Scikit-Learn API</a></h3>
-    <p>Consistent API design (<code>fit</code>, <code>transform</code>, <code>predict</code>), robust ColumnTransformers, Pipelines, and leakage-free cross-validation.</p>
-  </div>
-  <div class="card">
-    <h3><a href="workflows/eda-checklist/">📋 Practical Workflows</a></h3>
-    <p>Actionable checklists for Exploratory Data Analysis (EDA) and a complete end-to-end tabular machine learning starter template.</p>
-  </div>
-  <div class="card">
-    <h3><a href="resources/common-errors/">⚠️ Student Debugging Guide</a></h3>
-    <p>Solutions to the top 10 most common runtime errors and logical pitfalls students encounter during machine learning lab sessions.</p>
-  </div>
+<div class="grid-cards" markdown="1">
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="lifecycle/01-problem-framing/">:material-autorenew:{ .mlp-icon } The ML Lifecycle</a></h3>
+<p>One real project, start to finish: framing, validation, cleaning, splitting, baselines, features, modelling, tuning, fairness, serving, monitoring and reproducibility, on real retail data with every claim checked in code.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="timeseries/01-time-series-data/">:material-chart-line:{ .mlp-icon } Time Series</a></h3>
+<p>Forecast New York taxi demand: the calendar and its traps, decomposition, baselines, ETS/ARIMA, machine learning on lag features, rolling-origin backtesting, intervals, holidays and the 2020 collapse.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="toolkit/numpy-arrays/">:material-matrix:{ .mlp-icon } NumPy Reference</a></h3>
+<p>High-performance n-dimensional array computing, memory layouts, vectorized arithmetic, broadcasting mechanics, and linear algebra operations.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="toolkit/pandas-basics/">:material-table:{ .mlp-icon } Pandas Reference</a></h3>
+<p>DataFrames and Series, bulletproof data cleaning, handling missing values, grouped aggregations, merges, and indexing without warnings.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="toolkit/matplotlib/">:material-chart-bar:{ .mlp-icon } Data Visualization</a></h3>
+<p>Mastering Matplotlib's Object-Oriented interface alongside Seaborn's high-level statistical plots (distributions, pairplots, correlation heatmaps).</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="toolkit/sklearn-api/">:material-cog-outline:{ .mlp-icon } Scikit-Learn API</a></h3>
+<p>Consistent API design (<code>fit</code>, <code>transform</code>, <code>predict</code>), robust ColumnTransformers, Pipelines, and leakage-free cross-validation.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="workflows/eda-checklist/">:material-clipboard-check-outline:{ .mlp-icon } Practical Workflows</a></h3>
+<p>Actionable checklists for Exploratory Data Analysis (EDA) and a complete end-to-end tabular machine learning starter template.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
+<h3 markdown="span"><a href="resources/common-errors/">:material-bug-outline:{ .mlp-icon } Student Debugging Guide</a></h3>
+<p>Solutions to the top 10 most common runtime errors and logical pitfalls students encounter during machine learning lab sessions.</p>
+</div>
 </div>
 
 ---
 
-## 💡 How to Use This Website
+## :material-lightbulb-on-outline:{ .mlp-icon } How to Use This Website
 
 - **Instant Search:** Press <kbd>s</kbd> or <kbd>/</kbd> anywhere on this site to activate the instant search bar. Type function names (e.g. `StandardScaler`, `groupby`, `train_test_split`) to jump straight to examples.
 - **Copy Code:** Click the copy icon in the upper-right corner of any code block to copy ready-to-run snippets.

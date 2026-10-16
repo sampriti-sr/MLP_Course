@@ -8,7 +8,7 @@ A complete, production-grade template for building a tabular classification mode
 
 ---
 
-## 🏗️ Architecture Blueprint
+## :material-sitemap-outline:{ .mlp-icon } Architecture Blueprint
 
 ```mermaid
 flowchart LR
@@ -23,7 +23,7 @@ flowchart LR
 
 ---
 
-## 💻 Full Runnable Script
+## :material-language-python:{ .mlp-icon } Full Runnable Script
 
 ```python
 """

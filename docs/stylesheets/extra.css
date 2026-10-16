@@ -67,3 +67,27 @@
   margin-top: 0;
   color: var(--md-primary-fg-color);
 }
+
+/* Inline Material icons used in headings and cards (replace emoji) */
+.md-typeset .mlp-icon {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset h2 .mlp-icon,
+.md-typeset h3 .mlp-icon {
+  height: 1.05em;
+  width: 1.05em;
+  margin-right: 0.35em;
+  vertical-align: -0.12em;
+}
+
+.md-typeset h2 .mlp-icon svg,
+.md-typeset h3 .mlp-icon svg {
+  height: 100%;
+  width: 100%;
+  fill: currentColor;
+}
+
+.card h3 a {
+  color: inherit;
+}

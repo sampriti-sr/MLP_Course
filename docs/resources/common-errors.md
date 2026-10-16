@@ -9,7 +9,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** $X$ and $y$ have differing numbers of rows (usually caused by filtering or dropping `NaN` from $X$ without applying the same filter to $y$).
 - **Solution:** Always drop missing values or filter rows from the combined DataFrame **before** separating $X$ and $y$:
   ```python
-  # ✅ Fix:
+  # Fix:
   df = df.dropna(subset=["critical_column"])
   X = df.drop(columns=["target"])
   y = df["target"]
@@ -22,10 +22,10 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** Scikit-Learn estimators expect feature matrices to be 2-dimensional `(n_samples, n_features)`.
 - **Solution:** Reshape with `.reshape(-1, 1)` or slice using double brackets `df[['feature']]`:
   ```python
-  # ✅ Fix for NumPy:
+  # Fix for NumPy:
   single_feature_2d = feature_arr.reshape(-1, 1)
 
-  # ✅ Fix for Pandas:
+  # Fix for Pandas:
   single_feature_df = df[["single_col"]]  # Note double brackets!
   ```
 
@@ -36,7 +36,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** Scalers, imputers, or target statistics were computed on the entire dataset prior to `train_test_split`.
 - **Solution:** Encapsulate transformers inside a `Pipeline`:
   ```python
-  # ✅ Fix:
+  # Fix:
   pipeline = Pipeline([
       ("scaler", StandardScaler()),
       ("model", LogisticRegression())
@@ -51,7 +51,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** Optimization solver did not reach minimum before running out of iterations. Typically happens when features are not scaled or `max_iter` is too low.
 - **Solution:** Scale numerical features with `StandardScaler` and increase `max_iter`:
   ```python
-  # ✅ Fix:
+  # Fix:
   model = LogisticRegression(max_iter=1000)
   ```
 
@@ -62,7 +62,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** Default `OneHotEncoder(handle_unknown='error')` raises an error on new categories.
 - **Solution:** Set `handle_unknown="ignore"`:
   ```python
-  # ✅ Fix:
+  # Fix:
   encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
   ```
 
@@ -73,7 +73,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** Assigning values to a chained slice (e.g. `df[df['a'] > 5]['b'] = 10`).
 - **Solution:** Use `.loc[]` or explicitly call `.copy()`:
   ```python
-  # ✅ Fix:
+  # Fix:
   df.loc[df["a"] > 5, "b"] = 10
   ```
 
@@ -84,7 +84,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** When 96% of labels are negative, predicting negative for all samples yields 96% accuracy.
 - **Solution:** Use `f1_score`, `roc_auc_score`, or `classification_report`, and enable `class_weight='balanced'`:
   ```python
-  # ✅ Fix:
+  # Fix:
   model = RandomForestClassifier(class_weight="balanced")
   print(classification_report(y_test, y_pred))
   ```
@@ -103,7 +103,7 @@ A rapid diagnostic guide for the most frequent runtime errors and logical bugs s
 - **Root Cause:** Subtracting a 1D vector `(100,)` from a 2D matrix column-wise instead of row-wise.
 - **Solution:** Ensure correct trailing dimensions with `np.newaxis`:
   ```python
-  # ✅ Fix:
+  # Fix:
   diff = matrix_100x3 - vector_100[:, np.newaxis]
   ```
 
