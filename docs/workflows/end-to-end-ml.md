@@ -1,5 +1,9 @@
 # End-to-End Machine Learning Pipeline
 
+!!! info "Superseded by a worked example"
+    This script is a compact template on synthetic data. The lifecycle chapter builds a complete project on real data, with the split, baselines, evaluation, packaging, monitoring and reproducibility done properly: start at [Problem Framing](../lifecycle/01-problem-framing.ipynb).
+
+
 A complete, production-grade template for building a tabular classification model using Scikit-learn. Students can copy this template as the gold standard starting point for course projects.
 
 ---

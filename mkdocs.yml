@@ -115,22 +115,22 @@ nav:
       - 13. Monitoring and Drift: lifecycle/13-monitoring.ipynb
       - 14. Reproducibility and Hygiene: lifecycle/14-reproducibility.ipynb
   - NumPy:
-      - Overview & Core Concepts: libraries/numpy/index.md
-      - Arrays, Slicing & Reshaping: libraries/numpy/arrays-indexing.md
-      - Vectorization & Math: libraries/numpy/vectorization-math.md
+      - Arrays and Indexing: toolkit/numpy-arrays.ipynb
+      - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
   - Pandas:
-      - Series & DataFrames: libraries/pandas/index.md
-      - Data Cleaning & Filtering: libraries/pandas/data-cleaning.md
-      - Aggregations & Merging: libraries/pandas/manipulation.md
+      - Series, DataFrames and Selection: toolkit/pandas-basics.ipynb
+      - Cleaning and Types: toolkit/pandas-cleaning.ipynb
+      - Grouping, Merging and Reshaping: toolkit/pandas-grouping.ipynb
   - Visualization:
-      - Matplotlib (OO Interface): libraries/visualization/matplotlib.md
-      - Seaborn (Statistical Plots): libraries/visualization/seaborn.md
+      - Matplotlib: toolkit/matplotlib.ipynb
+      - Seaborn: toolkit/seaborn.ipynb
   - Scikit-Learn:
-      - The Estimator API Design: libraries/scikit-learn/index.md
-      - Preprocessing & Encoders: libraries/scikit-learn/preprocessing.md
-      - Pipelines & ColumnTransformers: libraries/scikit-learn/pipelines.md
-      - Models & Estimators: libraries/scikit-learn/models.md
-      - Model Evaluation & Tuning: libraries/scikit-learn/evaluation-tuning.md
+      - The Estimator API: toolkit/sklearn-api.ipynb
+      - Preprocessing: toolkit/sklearn-preprocessing.ipynb
+      - Pipelines and ColumnTransformer: toolkit/sklearn-pipelines.ipynb
+      - Model Families: toolkit/sklearn-models.ipynb
+      - Evaluation and Imbalanced Classes: toolkit/sklearn-evaluation.ipynb
+      - Unsupervised Learning: toolkit/sklearn-unsupervised.ipynb
   - Practical Workflows:
       - EDA Checklist: workflows/eda-checklist.md
       - End-to-End ML Pipeline: workflows/end-to-end-ml.md

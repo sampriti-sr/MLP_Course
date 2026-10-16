@@ -1,5 +1,9 @@
 # Exploratory Data Analysis (EDA) Checklist
 
+!!! info "Superseded by a worked example"
+    This checklist is kept as a quick reference. For the same ideas applied to a real dataset, with the traps found in practice, read [Exploratory Analysis](../lifecycle/04-eda.ipynb) and [Data Acquisition and Validation](../lifecycle/02-data-validation.ipynb) in the lifecycle chapter.
+
+
 Before training any model, follow this rigorous step-by-step EDA protocol to understand distributions, relationships, and data quality issues.
 
 ---
