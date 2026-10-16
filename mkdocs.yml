@@ -122,6 +122,7 @@ nav:
       - 5. Machine-Learning Forecasts: timeseries/05-ml-forecasting.ipynb
       - 6. Backtesting: timeseries/06-backtesting.ipynb
       - 7. Metrics and Prediction Intervals: timeseries/07-metrics-intervals.ipynb
+      - 8. Holidays and Regime Change: timeseries/08-holidays-regime-change.ipynb
   - NumPy:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
