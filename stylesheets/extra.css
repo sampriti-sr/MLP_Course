@@ -1,0 +1,69 @@
+/* Custom styles for MLP Course Documentation */
+
+:root {
+  --md-primary-fg-color: #2b3a4a;
+  --md-primary-fg-color--light: #3f556b;
+  --md-primary-fg-color--dark: #1b2530;
+  --md-accent-fg-color: #00897b;
+}
+
+/* Badge styling for tags and indicators */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.badge-primary {
+  background-color: #e0f2f1;
+  color: #00695c;
+  border: 1px solid #b2dfdb;
+}
+
+.badge-warning {
+  background-color: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffe0b2;
+}
+
+.badge-info {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  border: 1px solid #bbdefb;
+}
+
+/* Code block adjustments for cleaner reading */
+.md-typeset pre > code {
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+/* Highlighted summary cards in home and overview pages */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.card {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: var(--md-default-bg-color);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--md-primary-fg-color);
+}
