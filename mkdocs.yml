@@ -122,8 +122,8 @@ nav:
       - Cleaning and Types: toolkit/pandas-cleaning.ipynb
       - Grouping, Merging and Reshaping: toolkit/pandas-grouping.ipynb
   - Visualization:
-      - Matplotlib (OO Interface): libraries/visualization/matplotlib.md
-      - Seaborn (Statistical Plots): libraries/visualization/seaborn.md
+      - Matplotlib: toolkit/matplotlib.ipynb
+      - Seaborn: toolkit/seaborn.ipynb
   - Scikit-Learn:
       - The Estimator API Design: libraries/scikit-learn/index.md
       - Preprocessing & Encoders: libraries/scikit-learn/preprocessing.md

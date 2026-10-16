@@ -38,7 +38,7 @@ flowchart LR
     <p>DataFrames and Series, bulletproof data cleaning, handling missing values, grouped aggregations, merges, and indexing without warnings.</p>
   </div>
   <div class="card">
-    <h3><a href="libraries/visualization/matplotlib/">📊 Data Visualization</a></h3>
+    <h3><a href="toolkit/matplotlib/">📊 Data Visualization</a></h3>
     <p>Mastering Matplotlib's Object-Oriented interface alongside Seaborn's high-level statistical plots (distributions, pairplots, correlation heatmaps).</p>
   </div>
   <div class="card">
