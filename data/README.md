@@ -83,6 +83,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 
 1. **TLC reuse terms**: confirm via NYC Open Data before we ship any derived/sampled copy.
 2. **Mirror** Airbnb (and optionally retail parquet) as a GitHub Release asset to remove link-rot and the 35 s xlsx parse. Needs a decision on repo storage and attribution text.
-3. **Additional taxi months**: pick the exact range for the time-series track (Phase 4) and add their checksums.
+3. **Taxi months (done)**: the time-series track uses 2023-01 to 2023-03 and 2020-01 to 2020-05; checksums are recorded above.
+3b. **Weather**: forecast-aware exogenous variables need a licence-audited source with *archived forecasts*; none is audited yet, so the track has no weather feature.
 4. **Credit-default alternative**: if Taiwan-2005 is judged too dated, evaluate a more recent public credit/fraud dataset.
 5. **MovieLens** non-commercial clause: acceptable for a free course; revisit if the course is ever monetised.

@@ -71,7 +71,18 @@ Regularised linear models · trees and boosting · distance-based models · imba
 
 ## Part D: Time series *(NYC taxi)*
 
-Time-indexed data handling · decomposition and stationarity · baselines · ETS/ARIMA · machine learning on lag features · **backtesting** · forecast metrics and intervals · holidays, regime change and drift. **Status: planned.**
+Forecast New York taxi demand, hour by hour, and find out which of the methods actually beats "the average of the last four weeks".
+
+| Step | Topic | Status |
+|---|---|---|
+| 1 | [Time-series data: index, resampling, the calendar](../timeseries/01-time-series-data.ipynb) | Available |
+| 2 | [Trend, seasonality and stationarity](../timeseries/02-decomposition-stationarity.ipynb) | Available |
+| 3 | [Baselines: the forecasts to beat](../timeseries/03-baselines.ipynb) | Available |
+| 4 | [Classical models: ETS, ARIMA, regression with ARMA errors](../timeseries/04-classical-models.ipynb) | Available |
+| 5 | [Machine-learning forecasts: lag and calendar features](../timeseries/05-ml-forecasting.ipynb) | Available |
+| 6 | [Backtesting: rolling origins and honest comparison](../timeseries/06-backtesting.ipynb) | Available |
+| 7 | [Forecast metrics and prediction intervals](../timeseries/07-metrics-intervals.ipynb) | Available |
+| 8 | [Holidays, outside drivers and regime change](../timeseries/08-holidays-regime-change.ipynb) | Available |
 
 **Ready to move on when** you can build a forecast, backtest it without leaking the future, and explain how it would fail.
 

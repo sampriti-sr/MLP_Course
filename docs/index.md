@@ -30,6 +30,10 @@ flowchart LR
     <p>One real project, start to finish: framing, validation, cleaning, splitting, baselines, features, modelling, tuning, fairness, serving, monitoring and reproducibility, on real retail data with every claim checked in code.</p>
   </div>
   <div class="card">
+    <h3><a href="timeseries/01-time-series-data/">📈 Time Series (new)</a></h3>
+    <p>Forecast New York taxi demand: the calendar and its traps, decomposition, baselines, ETS/ARIMA, machine learning on lag features, rolling-origin backtesting, intervals, holidays and the 2020 collapse.</p>
+  </div>
+  <div class="card">
     <h3><a href="toolkit/numpy-arrays/">⚡ NumPy Reference</a></h3>
     <p>High-performance n-dimensional array computing, memory layouts, vectorized arithmetic, broadcasting mechanics, and linear algebra operations.</p>
   </div>
