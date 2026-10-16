@@ -34,7 +34,7 @@ flowchart LR
     <p>High-performance n-dimensional array computing, memory layouts, vectorized arithmetic, broadcasting mechanics, and linear algebra operations.</p>
   </div>
   <div class="card">
-    <h3><a href="libraries/pandas/">🐼 Pandas Reference</a></h3>
+    <h3><a href="toolkit/pandas-basics/">🐼 Pandas Reference</a></h3>
     <p>DataFrames and Series, bulletproof data cleaning, handling missing values, grouped aggregations, merges, and indexing without warnings.</p>
   </div>
   <div class="card">

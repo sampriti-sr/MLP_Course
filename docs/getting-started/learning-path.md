@@ -54,7 +54,7 @@ Look-up pages for the libraries. Use them whenever a syntax detail slips your mi
 | Library | Page | Status |
 |---|---|---|
 | NumPy | [Arrays and indexing](../toolkit/numpy-arrays.ipynb) · [Vectorisation, broadcasting, linear algebra](../toolkit/numpy-vectorisation.ipynb) | Available (real data, with exercises) |
-| pandas | [Series and DataFrames](../libraries/pandas/index.md) · [Cleaning](../libraries/pandas/data-cleaning.md) · [Aggregation](../libraries/pandas/manipulation.md) | Available (reference style, being upgraded) |
+| pandas | [Series, DataFrames and selection](../toolkit/pandas-basics.ipynb) · [Cleaning and types](../toolkit/pandas-cleaning.ipynb) · [Grouping, merging and reshaping](../toolkit/pandas-grouping.ipynb) | Available (real data, with exercises) |
 | Plotting | [Matplotlib](../libraries/visualization/matplotlib.md) · [Seaborn](../libraries/visualization/seaborn.md) | Available (reference style, being upgraded) |
 | scikit-learn | [API](../libraries/scikit-learn/index.md) · [Preprocessing](../libraries/scikit-learn/preprocessing.md) · [Pipelines](../libraries/scikit-learn/pipelines.md) · [Models](../libraries/scikit-learn/models.md) · [Evaluation](../libraries/scikit-learn/evaluation-tuning.md) | Available (reference style, being upgraded) |
 | Workflows | [EDA checklist](../workflows/eda-checklist.md) · [End-to-end template](../workflows/end-to-end-ml.md) | Available |

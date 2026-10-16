@@ -118,9 +118,9 @@ nav:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
   - Pandas:
-      - Series & DataFrames: libraries/pandas/index.md
-      - Data Cleaning & Filtering: libraries/pandas/data-cleaning.md
-      - Aggregations & Merging: libraries/pandas/manipulation.md
+      - Series, DataFrames and Selection: toolkit/pandas-basics.ipynb
+      - Cleaning and Types: toolkit/pandas-cleaning.ipynb
+      - Grouping, Merging and Reshaping: toolkit/pandas-grouping.ipynb
   - Visualization:
       - Matplotlib (OO Interface): libraries/visualization/matplotlib.md
       - Seaborn (Statistical Plots): libraries/visualization/seaborn.md
