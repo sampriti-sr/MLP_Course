@@ -43,7 +43,8 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 - **Source:** <https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page> · files at `https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_YYYY-MM.parquet`
 - ⚠️ **Licence:** the TLC page states that TLC makes no representations as to accuracy and publishes no licence or reuse terms. The data is also published on NYC Open Data. **Open item:** confirm the Open Data terms before we rely on this for anything other than on-demand download (we never redistribute it, which keeps us safe either way).
 - **Verified messiness (2023-01):** 48 trips with pickup outside the month (earliest 2008-12-31); 25,049 negative `fare_amount`; 45,862 zero-distance trips; 71,743 null `passenger_count`. The TLC page warns the parquet schema may be standardised across years, so **pin the months we use** and verify columns.
-- **Verified URLs:** 2023-01, 2023-02 and 2024-01 all resolve (HTTP 200).
+- **Verified URLs:** 2023-01, 2023-02 and 2024-01 all resolve (HTTP 200). For the time-series track (Phase 4) we also use 2023-02, 2023-03 and 2020-01 to 2020-05 (all HTTP 200; checksums below, recorded on first download, 2026-10-16). `mlp_data.timeseries.taxi_hourly` reads only the pickup-time column and caches hourly counts.
+- **Time-series facts (verified):** in 2023-01 to 2023-03 exactly one hourly slot is empty, 02:00 on 2023-03-12 (daylight-saving change; timestamps are naive local time). 2020 months shrink from 6.4 M trips (Jan) to 0.24 M (Apr).
 
 ### `airbnb`: Inside Airbnb, London
 - **Source:** <https://insideairbnb.com/get-the-data/> · `…/london/2026-09-17/data/listings.csv.gz`
@@ -69,6 +70,13 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 | `default+of+credit+card+clients.zip` | `56c885f84457f6680f8438f02bfcdac9579323d8a94465ee5f26e32baa727602` |
 | `default of credit card clients.xls` (inside zip) | `30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933` |
 | `yellow_tripdata_2023-01.parquet` | `32df6f67578fa86c484a6b5ef23a5281992ff085521082340b0f9e5889e9a572` |
+| `yellow_tripdata_2023-02.parquet` | `4809e6aaac64f05a62d16a25d55713be1537ad64fc261e895eaf2d2120fe750a` |
+| `yellow_tripdata_2023-03.parquet` | `e7d44943111b007bf0e7084863511886e0db29f862f9a96239383a1f86c6c26e` |
+| `yellow_tripdata_2020-01.parquet` | `0c32c1d5ef0d37ac3ff1a3f1880f247cc40165edf18626e5a86866296a4a5b93` |
+| `yellow_tripdata_2020-02.parquet` | `e57df0e7c410c02d78cd59a31394a118f3d92c50560a2d8fa3a2bf5e17dcffaa` |
+| `yellow_tripdata_2020-03.parquet` | `6fa1343946bc1e3702fc351ff9818787cc40e4cf2b095d947ff5e452b5b42f84` |
+| `yellow_tripdata_2020-04.parquet` | `3104e1e5548ade630988a4a8b9ec76c51a057b88159f78676c7d344f48491450` |
+| `yellow_tripdata_2020-05.parquet` | `f6167e3c8f1039ec4015cb121e73f8e08710ad1681da747f2b5aa504008cf289` |
 | `london/2026-09-17/listings.csv.gz` | `8017870734a9bffa1b424937372e5f02f8c4a114e5060534d7423be5fd718b4c` |
 
 ## Open items for the maintainers

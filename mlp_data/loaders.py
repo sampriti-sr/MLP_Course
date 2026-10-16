@@ -22,7 +22,16 @@ _ML_URL = "https://files.grouplens.org/datasets/movielens/ml-latest-small.zip"
 _ML_SHA = "696d65a3dfceac7c45750ad32df2c259311949efec81f0f144fdfb91ebc9e436"
 
 _TAXI_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month}.parquet"
-_TAXI_SHA = {"2023-01": "32df6f67578fa86c484a6b5ef23a5281992ff085521082340b0f9e5889e9a572"}
+_TAXI_SHA = {
+    "2023-01": "32df6f67578fa86c484a6b5ef23a5281992ff085521082340b0f9e5889e9a572",
+    "2023-02": "4809e6aaac64f05a62d16a25d55713be1537ad64fc261e895eaf2d2120fe750a",
+    "2023-03": "e7d44943111b007bf0e7084863511886e0db29f862f9a96239383a1f86c6c26e",
+    "2020-01": "0c32c1d5ef0d37ac3ff1a3f1880f247cc40165edf18626e5a86866296a4a5b93",
+    "2020-02": "e57df0e7c410c02d78cd59a31394a118f3d92c50560a2d8fa3a2bf5e17dcffaa",
+    "2020-03": "6fa1343946bc1e3702fc351ff9818787cc40e4cf2b095d947ff5e452b5b42f84",
+    "2020-04": "3104e1e5548ade630988a4a8b9ec76c51a057b88159f78676c7d344f48491450",
+    "2020-05": "f6167e3c8f1039ec4015cb121e73f8e08710ad1681da747f2b5aa504008cf289",
+}
 
 AIRBNB_SNAPSHOT = "2026-09-17"
 _AIRBNB_URL = (
