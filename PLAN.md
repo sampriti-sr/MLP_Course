@@ -20,7 +20,8 @@
 | 1. Foundations | **Done** (branch `kshitij-variant`) | See below. |
 | 2. Lifecycle (Part A) | **Done** (14 pages) | See below. |
 | 3. Toolkit (Parts B/C) | **Done** (12 pages) | NumPy 2, pandas 3, plotting 2, scikit-learn 6, all on real data. |
-| 4-7 | Not started | Time series (taxi), recommenders (MovieLens + retail), exercises/projects, release. |
+| 4. Time series (Part D) | **Done** (8 pages) | NYC taxi, hourly demand, Jan-Mar 2023 (+ Jan-May 2020 for the regime change). |
+| 5-7 | Not started | Recommenders (MovieLens + retail), exercises/projects, release. |
 
 **Phase 1 outcomes**
 
@@ -48,6 +49,21 @@ What the real data taught (all asserted in the notebooks, not just stated):
 **Phase 3 outcomes (the reference pages, rebuilt as 12 real-data notebooks in `docs/toolkit/`)**
 
 NumPy (taxi, retail), pandas (Airbnb, MovieLens, retail), Matplotlib and Seaborn (retail, Airbnb), scikit-learn (credit default, retail, Airbnb). Highlights from the data, each asserted or verified: a measured ~50x loop-vs-vectorised gap; 15 of 90 Airbnb columns entirely empty and missing prices that are structural (87% of gaps are unavailable listings); every perfect-5.0 movie rests on <=3 ratings; a many-to-many merge that inflates 100,836 rows to 233,213; k-NN AUC 0.65 -> 0.74 with scaling while trees do not care; feature selection outside CV scoring 0.85 on pure noise; a noise column ranked #3 by impurity importance; 82% accuracy catching only 36% of defaulters; raw-unit k-means giving a 98% cluster. The old invented-df markdown pages were deleted; the lifecycle chapter now covers the applied workflow, so these pages stay lookup-oriented with exercises.
+
+**Phase 4 outcomes (Part D, time series on NYC taxi demand: 8 notebooks in `docs/timeseries/`)**
+
+Supporting, tested code: `mlp_data.timeseries` (`taxi_hourly`, `taxi_hourly_by_zone`: read one column per monthly file and cache hourly counts) and `mlp_data.forecasting` (MAE/RMSE/MAPE/sMAPE/MASE, seasonal naive and seasonal mean, `holiday_aware_mean`, leak-guarded `make_features`, rolling-origin `backtest`; 10 tests). The task throughout: at midnight, forecast the next 24 hours. What the data taught (asserted or printed in the notebooks):
+
+- The month file called 2023-01 holds 48 trips from other dates (one from 2008); one hour in the three months does not exist (02:00 on 12 March, daylight saving, naive local timestamps); `resample("W")` yields partial first and last weeks.
+- Two seasons (24 h, 168 h) carry about 97% of the variance; ADF and KPSS *disagree* on the hourly series.
+- Baselines are strong: the 4-week same-hour average (MAE ~277) beat ETS, harmonic ARIMA and boosting on the first fortnight. The best number of weeks to average flips between windows (1 on validation, 8 on test): tuning on the test window gave a flattering 255.
+- Slot dummies + AR(1) errors looked 5% better than the 4-week average on 14 days; over 48 origins the difference is -1.1 +/- 7.5 pickups/hour (a tie). Boosting was worse (+26 +/- 13). Choosing the simplest of the tied methods is the verdict.
+- Leakage: `lag_1` makes a 24-hour-ahead model look ~20% better; shuffled K-fold flatters by ~17%; a rolling mean that includes the target hour by ~3%.
+- MAPE is undefined on a sparse zone (51% zero hours) and sMAPE crowned a "never any demand" forecast; MAE/RMSE/MASE did not. A constant-width 80% interval covers ~100% at night and ~55% at the evening peak; by-hour relative intervals are far more even.
+- Holidays: masking holidays from the averaging window and forecasting a holiday from earlier holidays cut the worst day's error from 594 to 276 (one holiday in the test period, a profile learned from two: plausible, not proven).
+- Regime change: demand fell 96% in spring 2020. The 4-week average over-forecast ~9x for weeks; weekly copy and a level-adjusted forecaster were wrong by ~150-170% and recovered ~6 weeks sooner. An error alarm built from a calm baseline that includes a holiday fires on 13 March 2020 and not before.
+
+Honest limits recorded in the pages: three months cannot support a trend or yearly-seasonality claim; weather was *not* added (no audited source with archived forecasts, a new open item in `data/README.md`'s spirit); the ML pages could not tell how much more history would help with only 11 weeks.
 
 **A defect found late, and fixed at the source.** Reading the final call list showed rank 1 was a customer whose GBP 77k order had been cancelled sixteen minutes later. Page 3 had tested only whether such orders flipped labels (they did not) and called them harmless; they distort *spend*, which a value-ranked list depends on. Fixed in `clean_retail` (step 6, with tests), and every page re-run and its prose corrected where a conclusion moved (the extra features' money gain and boosting's edge over the forest both disappeared; the model's lead over the rule shrank to "not demonstrable"). Lesson recorded on Page 3: *test a cleaning decision against every way the data is used.*
 
