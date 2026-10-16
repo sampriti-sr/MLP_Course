@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from mlp_data.forecasting import backtest, make_features, mase, mape, rolling_origins, score, seasonal_mean, seasonal_naive, smape
+from mlp_data.forecasting import seasonal_mean as fc_seasonal_mean
+from mlp_data.forecasting import backtest, holiday_aware_mean, make_features, mase, mape, rolling_origins, score, seasonal_mean, seasonal_naive, smape
 
 
 def _series(n=96):
@@ -73,3 +74,18 @@ def test_score_reports_four_metrics():
 def test_smape_treats_zero_zero_as_perfect_and_zero_vs_positive_as_the_worst_case():
     assert smape([0.0, 0.0], [0.0, 0.0]) == 0.0
     assert smape([0.0], [5.0]) == 2.0
+
+
+def test_holiday_aware_mean_masks_holidays_and_uses_the_holiday_profile():
+    idx = pd.date_range("2023-01-02", periods=24 * 7 * 5, freq="h")                 # five weeks from a Monday
+    y = pd.Series(100.0, index=idx)
+    y[y.index.date == pd.Timestamp("2023-01-09").date()] = 10.0                      # a holiday Monday is much quieter
+    holidays = {pd.Timestamp("2023-01-09").date(), pd.Timestamp("2023-02-13").date()}
+    horizon = pd.date_range("2023-02-06", periods=24, freq="h")                      # an ordinary Monday, 4 weeks after the holiday
+    plain = fc_seasonal_mean(y, horizon)
+    aware = holiday_aware_mean(y, horizon, holidays)
+    assert plain.iloc[0] < 100 and aware.iloc[0] == 100.0                            # masked: the 10s no longer pull the average down
+    on_holiday = pd.date_range("2023-02-13", periods=24, freq="h")
+    longer = y.reindex(pd.date_range(idx[0], on_holiday[0] - pd.Timedelta(hours=1), freq="h"))
+    assert holiday_aware_mean(longer, on_holiday, holidays).iloc[0] == 10.0           # the earlier holiday's level
+    assert holiday_aware_mean(longer, on_holiday, holidays, holiday_profile=False).iloc[0] == 100.0

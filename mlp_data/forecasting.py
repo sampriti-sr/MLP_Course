@@ -64,6 +64,33 @@ def seasonal_mean(history: pd.Series, horizon_index: pd.DatetimeIndex, *, weeks:
     return pd.Series(values, index=horizon_index, name="forecast")
 
 
+def holiday_aware_mean(history: pd.Series, horizon_index: pd.DatetimeIndex, holidays, *, weeks: int = 4,
+                       holiday_profile: bool = True) -> pd.Series:
+    """Seasonal mean that knows the holiday calendar.
+
+    * Holiday dates are masked out of the history, so a holiday never contaminates the average used for an ordinary day.
+    * With ``holiday_profile=True``, a target hour that falls on a holiday is forecast with the average of the same hour on
+      *earlier holidays* in the history (falling back to the ordinary forecast when there is none yet).
+
+    ``holidays`` is any collection of ``datetime.date`` objects known in advance (e.g. from a calendar).
+    """
+    holidays = set(holidays)
+    is_holiday = pd.Series([d in holidays for d in history.index.date], index=history.index)
+    clean = history.where(~is_holiday)
+    past_holidays = sorted({d for d in holidays if pd.Timestamp(d) + pd.Timedelta(days=1) <= history.index[-1]
+                            and pd.Timestamp(d) >= history.index[0].normalize()})
+    values = []
+    for t in horizon_index:
+        if holiday_profile and t.date() in holidays and past_holidays:
+            same_hour = [history.get(pd.Timestamp(d) + pd.Timedelta(hours=t.hour), np.nan) for d in past_holidays]
+            values.append(np.nanmean(same_hour))
+            continue
+        ordinary = [clean.get(t - pd.Timedelta(weeks=k), np.nan) for k in range(1, weeks + 4)]   # look a few weeks further back
+        ordinary = [v for v in ordinary if not np.isnan(v)][:weeks]                            # to replace masked holiday weeks
+        values.append(np.mean(ordinary) if ordinary else np.nan)
+    return pd.Series(values, index=horizon_index, name="forecast")
+
+
 def score(bt: pd.DataFrame, y_train, *, m: int = 168) -> dict:
     """The standard scorecard for a backtest frame: MAE, RMSE, sMAPE and MASE (scaled by seasonal-naive period ``m``)."""
     return {"MAE": mae(bt["actual"], bt["forecast"]), "RMSE": rmse(bt["actual"], bt["forecast"]),
