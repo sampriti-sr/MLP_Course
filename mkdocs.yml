@@ -125,11 +125,12 @@ nav:
       - Matplotlib: toolkit/matplotlib.ipynb
       - Seaborn: toolkit/seaborn.ipynb
   - Scikit-Learn:
-      - The Estimator API Design: libraries/scikit-learn/index.md
-      - Preprocessing & Encoders: libraries/scikit-learn/preprocessing.md
-      - Pipelines & ColumnTransformers: libraries/scikit-learn/pipelines.md
-      - Models & Estimators: libraries/scikit-learn/models.md
-      - Model Evaluation & Tuning: libraries/scikit-learn/evaluation-tuning.md
+      - The Estimator API: toolkit/sklearn-api.ipynb
+      - Preprocessing: toolkit/sklearn-preprocessing.ipynb
+      - Pipelines and ColumnTransformer: toolkit/sklearn-pipelines.ipynb
+      - Model Families: toolkit/sklearn-models.ipynb
+      - Evaluation and Imbalanced Classes: toolkit/sklearn-evaluation.ipynb
+      - Unsupervised Learning: toolkit/sklearn-unsupervised.ipynb
   - Practical Workflows:
       - EDA Checklist: workflows/eda-checklist.md
       - End-to-End ML Pipeline: workflows/end-to-end-ml.md

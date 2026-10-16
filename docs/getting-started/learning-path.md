@@ -56,7 +56,7 @@ Look-up pages for the libraries. Use them whenever a syntax detail slips your mi
 | NumPy | [Arrays and indexing](../toolkit/numpy-arrays.ipynb) · [Vectorisation, broadcasting, linear algebra](../toolkit/numpy-vectorisation.ipynb) | Available (real data, with exercises) |
 | pandas | [Series, DataFrames and selection](../toolkit/pandas-basics.ipynb) · [Cleaning and types](../toolkit/pandas-cleaning.ipynb) · [Grouping, merging and reshaping](../toolkit/pandas-grouping.ipynb) | Available (real data, with exercises) |
 | Plotting | [Matplotlib](../toolkit/matplotlib.ipynb) · [Seaborn](../toolkit/seaborn.ipynb) | Available (real data, with exercises) |
-| scikit-learn | [API](../libraries/scikit-learn/index.md) · [Preprocessing](../libraries/scikit-learn/preprocessing.md) · [Pipelines](../libraries/scikit-learn/pipelines.md) · [Models](../libraries/scikit-learn/models.md) · [Evaluation](../libraries/scikit-learn/evaluation-tuning.md) | Available (reference style, being upgraded) |
+| scikit-learn | [Estimator API](../toolkit/sklearn-api.ipynb) · [Preprocessing](../toolkit/sklearn-preprocessing.ipynb) · [Pipelines](../toolkit/sklearn-pipelines.ipynb) · [Model families](../toolkit/sklearn-models.ipynb) · [Evaluation](../toolkit/sklearn-evaluation.ipynb) · [Unsupervised](../toolkit/sklearn-unsupervised.ipynb) | Available (real data, with exercises) |
 | Workflows | [EDA checklist](../workflows/eda-checklist.md) · [End-to-end template](../workflows/end-to-end-ml.md) | Available |
 | Debugging | [Common mistakes](../resources/common-errors.md) | Available |
 

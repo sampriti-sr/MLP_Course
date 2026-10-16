@@ -42,7 +42,7 @@ flowchart LR
     <p>Mastering Matplotlib's Object-Oriented interface alongside Seaborn's high-level statistical plots (distributions, pairplots, correlation heatmaps).</p>
   </div>
   <div class="card">
-    <h3><a href="libraries/scikit-learn/">⚙️ Scikit-Learn API</a></h3>
+    <h3><a href="toolkit/sklearn-api/">⚙️ Scikit-Learn API</a></h3>
     <p>Consistent API design (<code>fit</code>, <code>transform</code>, <code>predict</code>), robust ColumnTransformers, Pipelines, and leakage-free cross-validation.</p>
   </div>
   <div class="card">
