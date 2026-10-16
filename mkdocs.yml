@@ -119,6 +119,7 @@ nav:
       - 2. Trend, Seasonality, Stationarity: timeseries/02-decomposition-stationarity.ipynb
       - 3. Baselines: timeseries/03-baselines.ipynb
       - 4. Classical Models: timeseries/04-classical-models.ipynb
+      - 5. Machine-Learning Forecasts: timeseries/05-ml-forecasting.ipynb
   - NumPy:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
