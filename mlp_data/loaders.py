@@ -38,6 +38,13 @@ _AIRBNB_URL = (
     "https://data.insideairbnb.com/united-kingdom/england/london/"
     "{snapshot}/data/listings.csv.gz"
 )
+# Inside Airbnb deletes old snapshots, so the pinned URL will eventually 404. CC BY 4.0 allows a
+# copy with attribution; the exact pinned file is kept as a release asset. _download.fetch only
+# accepts it if the SHA-256 below matches. See data/README.md ("Mirror") for how it is published.
+_AIRBNB_MIRROR = (
+    "https://github.com/sampriti-sr/MLP_Course/releases/download/data-v1/"
+    "airbnb_london_{snapshot}_listings.csv.gz"
+)
 _AIRBNB_SHA = {"2026-09-17": "8017870734a9bffa1b424937372e5f02f8c4a114e5060534d7423be5fd718b4c"}
 
 _CREDIT_URL = "https://archive.ics.uci.edu/static/public/350/default+of+credit+card+clients.zip"
@@ -116,7 +123,8 @@ def load_airbnb() -> pd.DataFrame:
     Attribution: Inside Airbnb (CC BY 4.0).
     """
     path = fetch(_AIRBNB_URL.format(snapshot=AIRBNB_SNAPSHOT), _raw(f"airbnb_london_{AIRBNB_SNAPSHOT}_listings.csv.gz"),
-                 sha256=_AIRBNB_SHA.get(AIRBNB_SNAPSHOT), label=f"Inside Airbnb London {AIRBNB_SNAPSHOT}")
+                 sha256=_AIRBNB_SHA.get(AIRBNB_SNAPSHOT), label=f"Inside Airbnb London {AIRBNB_SNAPSHOT}",
+                 mirrors=[_AIRBNB_MIRROR.format(snapshot=AIRBNB_SNAPSHOT)])
     return pd.read_csv(path, low_memory=False)
 
 
