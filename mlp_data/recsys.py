@@ -305,19 +305,30 @@ def user_knn_scores(X: sp.spmatrix, S: sp.spmatrix) -> np.ndarray:
     return np.asarray((sp.csr_matrix(S) @ sp.csr_matrix(X)).todense(), dtype=np.float32)
 
 
-def predict_ratings_knn(R: sp.spmatrix, S: sp.spmatrix, *, axis: str = "item") -> np.ndarray:
-    """Predict *rating values* from neighbours' mean-centred ratings: ``mean_u + sum(s * dev) / sum(|s|)``.
+def centre_users(R: sp.spmatrix) -> tuple[sp.csr_matrix, np.ndarray]:
+    """Subtract each user's mean rating from their ratings. Returns ``(centred, user_mean)``.
 
-    ``axis="item"``: ``S`` is item-item, deviations are the user's own ratings of similar items.
-    ``axis="user"``: ``S`` is user-user, deviations are similar users' ratings of the item.
-    Where no neighbour has a rating, the user's mean rating is returned.
+    Users use the stars differently (a 3 can be a user's best or worst mark); centring compares what a
+    rating says *relative to that user*. Stored entries stay stored even when they become exactly 0.
     """
     R = sp.csr_matrix(R, dtype=np.float32)
     counts = np.asarray(R.getnnz(axis=1)).ravel()
-    user_mean = np.divide(np.asarray(R.sum(axis=1)).ravel(), counts, out=np.zeros(R.shape[0]), where=counts > 0)
+    mean = np.divide(np.asarray(R.sum(axis=1)).ravel(), counts, out=np.zeros(R.shape[0]), where=counts > 0)
     centred = R.copy()
-    centred.data = centred.data - np.repeat(user_mean, counts).astype(np.float32)
-    seen = R.copy()
+    centred.data = centred.data - np.repeat(mean, counts).astype(np.float32)
+    return centred, mean.astype(np.float32)
+
+
+def predict_ratings_knn(R: sp.spmatrix, S: sp.spmatrix, *, axis: str = "item", shrink: float = 0.0) -> np.ndarray:
+    """Predict *rating values* from neighbours' mean-centred ratings: ``mean_u + sum(s * dev) / (sum(|s|) + shrink)``.
+
+    ``axis="item"``: ``S`` is item-item, deviations are the user's own ratings of similar items.
+    ``axis="user"``: ``S`` is user-user, deviations are similar users' ratings of the item.
+    Where no neighbour has a rating, the user's mean rating is returned. ``shrink > 0`` pulls predictions
+    resting on little neighbour evidence back toward the user's mean.
+    """
+    centred, user_mean = centre_users(R)
+    seen = sp.csr_matrix(R, dtype=np.float32, copy=True)        # copy: csr_matrix() alone can share R's data
     seen.data[:] = 1.0
     S = sp.csr_matrix(S)
     if axis == "item":
@@ -326,6 +337,7 @@ def predict_ratings_knn(R: sp.spmatrix, S: sp.spmatrix, *, axis: str = "item") -
     else:
         num = (S @ centred).toarray()
         den = (abs(S) @ seen).toarray()
+    den = den + shrink
     return (user_mean[:, None] + np.divide(num, den, out=np.zeros_like(num), where=den > 0)).astype(np.float32)
 
 

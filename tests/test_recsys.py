@@ -275,3 +275,40 @@ def test_make_task_builds_aligned_matrices_and_a_nested_validation_split():
     inner = rs.make_task(task.train, index=task.index)
     assert inner.X.shape == task.X.shape and len(inner.train) < len(task.train)
     assert inner.test.index.isin(task.test.index).sum() == 0                # validation never touches the test part
+
+
+def test_centre_users_removes_each_users_mean_and_keeps_stored_zeros():
+    R = sp.csr_matrix(np.array([[4.0, 2.0, 0.0], [5.0, 0.0, 5.0], [0.0, 0.0, 0.0]]))
+    centred, mean = rs.centre_users(R)
+    assert mean.tolist() == [3.0, 5.0, 0.0]
+    assert centred[0].toarray().tolist() == [[1.0, -1.0, 0.0]]
+    assert centred.nnz == R.nnz                                   # the 5 -> 0 entries are still stored
+    assert np.isclose(np.asarray(centred.sum(axis=1)).ravel(), 0).all()
+
+
+def test_knn_prediction_shrink_pulls_toward_the_user_mean():
+    R = sp.csr_matrix(np.array([[5.0, 5.0, 0.0], [5.0, 5.0, 1.0], [1.0, 2.0, 5.0]]))
+    S = rs.item_similarity(R, k=2)
+    free, shrunk = rs.predict_ratings_knn(R, S, shrink=0.0), rs.predict_ratings_knn(R, S, shrink=100.0)
+    mean0 = 5.0
+    assert abs(shrunk[0, 2] - mean0) < abs(free[0, 2] - mean0) + 1e-6
+    assert np.allclose(shrunk, rs.centre_users(R)[1][:, None], atol=0.1)
+
+
+def test_no_model_function_modifies_its_input_matrix():
+    rng = np.random.default_rng(0)
+    R = sp.csr_matrix((rng.integers(1, 6, 400).astype(np.float32) * (rng.random(400) < 0.4)).reshape(20, 20))
+    R.eliminate_zeros()
+    before = (R.data.copy(), R.indices.copy(), R.indptr.copy())
+    S_item, S_user = rs.item_similarity(R, k=5, shrink=2), rs.user_similarity(R, k=5)
+    calls = [
+        lambda: rs.popularity(R), lambda: rs.damped_mean(R, 3), lambda: rs.centre_users(R),
+        lambda: rs.item_knn_scores(R, S_item), lambda: rs.user_knn_scores(R, S_user),
+        lambda: rs.predict_ratings_knn(R, S_item, axis="item"), lambda: rs.predict_ratings_knn(R, S_user, axis="user"),
+        lambda: rs.pure_svd(R, factors=3), lambda: rs.bias_baseline(R),
+        lambda: rs.als_explicit(R, factors=2, iters=2), lambda: rs.als_implicit(R, factors=2, iters=2),
+    ]
+    for call in calls:
+        call()
+        for now, was in zip((R.data, R.indices, R.indptr), before):
+            assert np.array_equal(now, was), f"{call} changed its input"
