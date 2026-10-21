@@ -312,3 +312,29 @@ def test_no_model_function_modifies_its_input_matrix():
         call()
         for now, was in zip((R.data, R.indices, R.indptr), before):
             assert np.array_equal(now, was), f"{call} changed its input"
+
+
+def test_purchase_task_splits_by_date_and_separates_repeat_from_new():
+    sales = pd.DataFrame({
+        "customer_id": [1, 1, 1, 2, 2, 3],
+        "stock_code": ["a", "b", "a", "a", "c", "z"],
+        "invoice_date": pd.to_datetime(["2011-01-01", "2011-01-02", "2011-03-05", "2011-01-03", "2011-03-06", "2011-01-04"]),
+    })
+    t = rs.make_purchase_task(sales, "2011-03-01", days=30)
+    items = list(t.index.items)
+    a, b, c = items.index("a"), items.index("b"), items.index("c")
+    assert t.counts[0, a] == 1 and t.counts[0, b] == 1 and t.B.nnz == 4          # only lines before the cutoff
+    assert t.repeat[0, a] == 1 and t.repeat[1, c] == 1 and t.repeat.nnz == 2     # only lines inside the window
+    assert t.new[0, a] == 0 and t.new[1, c] == 1 and t.new.nnz == 1              # customer 1's "a" is a repeat, not new
+    assert not t.B.multiply(t.new).nnz
+    assert t.window == (pd.Timestamp("2011-03-01"), pd.Timestamp("2011-03-31"))
+    assert rs.make_purchase_task(sales, "2011-03-01", days=4).repeat.nnz == 0     # window ends 03-05 and excludes that day
+    five = rs.make_purchase_task(sales, "2011-03-01", days=5)                    # ends 03-06: includes 03-05, excludes 03-06
+    assert five.repeat.nnz == 1 and five.repeat[0, a] == 1
+
+
+def test_purchase_task_counts_repeat_lines_and_rejects_nothing_silently():
+    sales = pd.DataFrame({"customer_id": [1, 1, 1], "stock_code": ["a", "a", "a"],
+                          "invoice_date": pd.to_datetime(["2011-01-01", "2011-01-02", "2011-01-03"])})
+    t = rs.make_purchase_task(sales, "2011-02-01")
+    assert t.counts[0, 0] == 3 and t.B[0, 0] == 1 and t.repeat.nnz == 0

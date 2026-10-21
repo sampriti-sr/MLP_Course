@@ -107,6 +107,39 @@ def make_task(ratings: pd.DataFrame, *, index: Index | None = None, like: float 
                 to_csr(test[test["rating"] >= like], index))
 
 
+class PurchaseTask(NamedTuple):
+    """A purchase-history experiment: learn from everything before ``cutoff``, be scored on the next ``days``."""
+    index: Index
+    counts: sp.csr_matrix      # purchase lines per (customer, product) before the cutoff
+    B: sp.csr_matrix           # the same as 0/1
+    repeat: sp.csr_matrix      # products bought in the window, including ones bought before (0/1)
+    new: sp.csr_matrix         # products bought in the window that the customer had never bought before (0/1)
+    window: tuple              # (start, end) of the scoring window
+
+
+def make_purchase_task(sales: pd.DataFrame, cutoff, days: int = 90, *, index: Index | None = None,
+                       user: str = "customer_id", item: str = "stock_code", time: str = "invoice_date") -> PurchaseTask:
+    """Split purchase lines by *date*: before ``cutoff`` is history, ``cutoff`` to ``cutoff + days`` is the future.
+
+    Two ways to define a hit, because they are different questions: ``repeat`` is "will they buy this again or
+    anew" (any product bought in the window) and ``new`` is "what could we introduce them to" (bought in the
+    window and never before the cutoff).
+    """
+    cutoff = pd.Timestamp(cutoff)
+    end = cutoff + pd.Timedelta(days=days)
+    index = index if index is not None else make_index(sales, user, item)
+    history = sales[sales[time] < cutoff]
+    future = sales[(sales[time] >= cutoff) & (sales[time] < end)]
+    counts = to_csr(history, index, user=user, item=item)
+    B = counts.copy()
+    B.data[:] = 1.0
+    repeat = to_csr(future, index, user=user, item=item)
+    repeat.data[:] = 1.0
+    new = repeat - repeat.multiply(B)
+    new.eliminate_zeros()
+    return PurchaseTask(index, counts, B, repeat, new, (cutoff, end))
+
+
 # --- Ranking -------------------------------------------------------------------------------
 
 
