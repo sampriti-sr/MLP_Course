@@ -91,3 +91,18 @@
 .card h3 a {
   color: inherit;
 }
+
+/* Notebook code cells: wrap long lines instead of scrolling. Overlay scrollbars (macOS, phones) are
+   invisible, so a scrolling cell looks like clipped code and students cannot tell more is there. */
+.jp-Notebook .highlight-ipynb pre,
+.jp-Notebook .CodeMirror pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Static code blocks in the Markdown pages keep scrolling (wrapping would break indentation), but
+   make the scrollbar always visible so the extra width is discoverable. */
+.md-typeset pre > code {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}

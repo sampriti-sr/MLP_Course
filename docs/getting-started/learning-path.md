@@ -3,7 +3,7 @@
 The course is built around **one story told with real data**, then widened with two specialised tracks. Work through the parts in order. Each part says what you should be able to do before moving on.
 
 ```mermaid
-flowchart LR
+flowchart TD
     S["Start here<br/>Datasets"] --> A["Part A<br/>The ML lifecycle"]
     A --> C["Part C<br/>Classical ML in practice"]
     C --> D["Part D<br/>Time series"]

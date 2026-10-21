@@ -12,7 +12,7 @@ Rather than memorizing syntax or searching scattered forums, use this portal to 
 ## :material-compass-outline:{ .mlp-icon } Course Roadmap & Library Ecosystem
 
 ```mermaid
-flowchart LR
+flowchart TD
     A["Raw Data (CSV / Parquet / SQL)"] --> B["Data Wrangling (Pandas / NumPy)"]
     B --> C["Exploratory Data Analysis (Matplotlib / Seaborn)"]
     C --> D["Feature Engineering (Scikit-Learn Transformers)"]
