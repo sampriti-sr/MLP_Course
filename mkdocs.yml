@@ -1,8 +1,10 @@
 site_name: "Machine Learning Practice (MLP)"
 site_description: "Practical documentation, code snippets, and reference guides for Python Machine Learning libraries."
-site_author: "Course Instructor"
-repo_name: "MLP_Course"
-repo_url: ""
+site_url: "https://sampriti-sr.github.io/MLP_Course/"
+site_author: "sampriti-sr"
+repo_name: "sampriti-sr/MLP_Course"
+repo_url: "https://github.com/sampriti-sr/MLP_Course"
+edit_uri: "edit/main/docs/"
 
 theme:
   name: material
