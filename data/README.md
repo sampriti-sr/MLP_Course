@@ -88,10 +88,11 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 | `airbnb` | **Yes**, GitHub Release `data-v1` | Snapshots rotate, so the pinned URL will 404. CC BY 4.0 allows redistribution with attribution (credit "Inside Airbnb"). |
 | `taxi` | **No** | TLC states no licence, so we never redistribute it (see open item 1). |
 | `retail`, `credit` | No | Stable UCI URLs with DOIs. Revisit if UCI moves them. (CC BY 4.0, so a mirror would be allowed.) |
-| `movielens` | No | Stable GroupLens URL. Redistribution is allowed only under the same non-commercial terms. |
+| `movielens` | **Yes (code done, asset pending)**, same `data-v1` release | **Found 2026-10-21:** `files.grouplens.org` sends a certificate chain ending at the root *emSign ECC Root CA - G3*, which is in the macOS trust store but not in Mozilla's bundle (certifi), so Python's TLS verification fails (`openssl s_client -CAfile certifi/cacert.pem` returns code 20) while `curl` on a Mac works. We never disable verification; a SHA-256-pinned copy is the fallback. GroupLens permits redistribution under the same terms (non-commercial, cite Harper & Konstan 2015), so the release notes must say so. |
 
 **Publishing the Airbnb mirror (maintainer, one-off).** The asset is the original file, byte for byte, never a re-export:
 
+0. **MovieLens too:** upload `ml-latest-small.zip` (978,202 bytes, SHA-256 `696d65a3dfceac7c45750ad32df2c259311949efec81f0f144fdfb91ebc9e436`) to the same release, unmodified, with this line in the notes: *"MovieLens ml-latest-small, GroupLens Research, University of Minnesota. Unmodified copy. Non-commercial use only; cite F. M. Harper and J. A. Konstan, The MovieLens Datasets: History and Context, ACM TiiS 5(4), 2015."*
 1. Get the file: `python -c "import mlp_data; mlp_data.load_airbnb()"` caches it at `~/.cache/mlp_course/raw/airbnb_london_2026-09-17_listings.csv.gz` (48.3 MB). Check `shasum -a 256` against the table above.
 2. On GitHub, **Releases > Draft a new release**, tag `data-v1`, attach that file with exactly that name, and put in the notes: *"Inside Airbnb, London listings, snapshot 2026-09-17, CC BY 4.0, https://insideairbnb.com. Unmodified copy, mirrored so the course keeps working after the original snapshot is removed."*
 3. Verify from a clean machine: `MLP_DATA_DIR=$(mktemp -d) python -c "import mlp_data.loaders as l; l._AIRBNB_URL = 'https://invalid.example/{snapshot}'; print(l.load_airbnb().shape)"` should print `(91954, 90)` after saying it is using the course mirror.

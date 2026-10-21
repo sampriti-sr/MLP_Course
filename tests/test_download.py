@@ -94,3 +94,20 @@ def test_airbnb_loader_passes_its_mirror_and_pinned_checksum(tmp_path, monkeypat
         f"https://github.com/sampriti-sr/MLP_Course/releases/download/data-v1/"
         f"airbnb_london_{loaders.AIRBNB_SNAPSHOT}_listings.csv.gz"
     ]
+
+
+def test_movielens_loader_has_a_pinned_mirror_for_the_certificate_chain_problem(tmp_path, monkeypatch):
+    from mlp_data import loaders
+
+    seen = {}
+
+    def fake_fetch(url, dest, **kw):
+        seen.update(kw)
+        raise RuntimeError("stop here")
+
+    monkeypatch.setenv("MLP_DATA_DIR", str(tmp_path))
+    monkeypatch.setattr(loaders, "fetch", fake_fetch)
+    with pytest.raises(RuntimeError, match="stop here"):
+        loaders.load_movielens()
+    assert seen["sha256"] == loaders._ML_SHA
+    assert seen["mirrors"] == ["https://github.com/sampriti-sr/MLP_Course/releases/download/data-v1/ml-latest-small.zip"]

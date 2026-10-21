@@ -82,6 +82,31 @@ def assert_chronological(train: pd.DataFrame, test: pd.DataFrame, *, user: str =
         raise AssertionError(f"{len(bad)} users have training interactions later than their test interactions.")
 
 
+class Task(NamedTuple):
+    """One recommendation experiment: who has what, what is held out, and what counts as a hit."""
+    index: Index
+    train: pd.DataFrame        # interactions the model may learn from
+    test: pd.DataFrame         # held-out interactions
+    X: sp.csr_matrix           # training ratings (0 = not rated)
+    B: sp.csr_matrix           # training interactions as 0/1
+    relevant: sp.csr_matrix    # held-out items that count as hits (rating >= like)
+
+
+def make_task(ratings: pd.DataFrame, *, index: Index | None = None, like: float = 4.0, how: str = "time",
+              test_frac: float = 0.2, seed: int = 0) -> Task:
+    """Split every user's ratings, then build the matrices. A held-out item is a *hit* if it was rated >= ``like``.
+
+    Pass the training part of a task back in (with ``index=task.index``) to carve a validation split out of
+    it, so hyper-parameters can be tuned without ever looking at the test part.
+    """
+    index = index if index is not None else make_index(ratings)
+    train, test = split_per_user(ratings, test_frac=test_frac, how=how, seed=seed)
+    if how == "time":
+        assert_chronological(train, test)
+    return Task(index, train, test, to_csr(train, index, value="rating"), to_csr(train, index),
+                to_csr(test[test["rating"] >= like], index))
+
+
 # --- Ranking -------------------------------------------------------------------------------
 
 
@@ -205,12 +230,15 @@ def damped_mean(ratings: sp.spmatrix, damping: float = 10.0) -> np.ndarray:
     """Mean rating pulled toward the overall mean as ``(sum + damping * mu) / (count + damping)``.
 
     With ``damping=0`` this is the plain mean, which crowns items with a single 5-star rating.
+    Items with no ratings get the overall mean.
     """
     r = sp.csr_matrix(ratings)
     count = np.asarray(r.getnnz(axis=0), dtype=np.float64)
     total = np.asarray(r.sum(axis=0)).ravel()
     mu = r.data.mean()
-    return ((total + damping * mu) / (count + damping)).astype(np.float32)
+    num, den = total + damping * mu, count + damping
+    # An item nobody rated has no mean at all (0/0 when damping=0): fall back to the overall mean.
+    return np.divide(num, den, out=np.full_like(num, mu), where=den > 0).astype(np.float32)
 
 
 def broadcast(item_scores: np.ndarray, n_users: int) -> np.ndarray:

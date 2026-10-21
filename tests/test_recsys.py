@@ -152,6 +152,13 @@ def test_damped_mean_stops_one_lucky_rating_from_winning():
     assert plain[0] > plain[1] and damped[0] < damped[1]
 
 
+def test_damped_mean_gives_unrated_items_the_overall_mean_instead_of_nan():
+    R = sp.csr_matrix(np.array([[4.0, 0.0], [2.0, 0.0]]))              # item 1 has no ratings
+    for d in (0, 10):
+        out = rs.damped_mean(R, d)
+        assert np.isfinite(out).all() and out[1] == pytest.approx(3.0)
+
+
 def test_popularity_counts_users():
     X = sp.csr_matrix(np.array([[1, 1, 0], [1, 0, 0]]))
     assert rs.popularity(X).tolist() == [2, 1, 0]
@@ -257,3 +264,14 @@ def test_genre_matrix_aligns_to_the_index():
     G, names = rs.genre_matrix(movies, ix)
     assert names == ["Comedy", "Drama"] and G.shape == (4, 2)
     assert G.toarray().tolist() == [[0, 0], [0, 1], [1, 1], [0, 0]]
+
+
+def test_make_task_builds_aligned_matrices_and_a_nested_validation_split():
+    df = _many_users().assign(rating=lambda d: np.where(d["movieId"] % 2 == 0, 5.0, 2.0))
+    task = rs.make_task(df)
+    assert task.X.shape == task.B.shape == task.relevant.shape == (30, 25)
+    assert task.B.nnz == len(task.train) and task.relevant.nnz == (task.test["rating"] >= 4.0).sum()
+    assert not task.B.multiply(task.relevant).nnz                           # a hit is never an item the user trained on
+    inner = rs.make_task(task.train, index=task.index)
+    assert inner.X.shape == task.X.shape and len(inner.train) < len(task.train)
+    assert inner.test.index.isin(task.test.index).sum() == 0                # validation never touches the test part

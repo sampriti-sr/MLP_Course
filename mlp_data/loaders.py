@@ -20,6 +20,10 @@ _RETAIL_XLSX_SHA = "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2
 
 _ML_URL = "https://files.grouplens.org/datasets/movielens/ml-latest-small.zip"
 _ML_SHA = "696d65a3dfceac7c45750ad32df2c259311949efec81f0f144fdfb91ebc9e436"
+# files.grouplens.org serves a certificate chain that ends at a root (emSign ECC Root CA - G3) missing from
+# Mozilla's bundle (certifi), so Python can fail TLS verification where the OS trust store would not (seen on
+# macOS with certifi). Verification is never disabled; instead a copy pinned by SHA-256 is the fallback.
+_ML_MIRROR = "https://github.com/sampriti-sr/MLP_Course/releases/download/data-v1/ml-latest-small.zip"
 
 _TAXI_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month}.parquet"
 _TAXI_SHA = {
@@ -90,7 +94,8 @@ def load_movielens() -> MovieLens:
 
     Non-commercial use only; see the GroupLens terms in data/README.md.
     """
-    zpath = fetch(_ML_URL, _raw("ml-latest-small.zip"), sha256=_ML_SHA, label="MovieLens small")
+    zpath = fetch(_ML_URL, _raw("ml-latest-small.zip"), sha256=_ML_SHA, label="MovieLens small",
+                  mirrors=[_ML_MIRROR])
     tables = {}
     with zipfile.ZipFile(zpath) as zf:
         for name in ("ratings", "movies", "links", "tags"):
