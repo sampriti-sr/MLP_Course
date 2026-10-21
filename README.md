@@ -1,106 +1,105 @@
-# Machine Learning Practice (MLP) Course Documentation
+# Machine Learning Practice (MLP) Course
 
-A modern, responsive, and searchable course documentation website and reference portal for students taking **Machine Learning Practice (MLP)**.
+A course site for learning the whole machine learning project lifecycle on real data. Every page is a Jupyter notebook you can read in the browser, download, or open in Colab. The site is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
 
-Built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/), this repository gives students a single, clean place to look up API references, code patterns, EDA workflows, and debugging tips across:
+Live site: <https://sampriti-sr.github.io/MLP_Course/>
 
-- **NumPy**: Vectorization, broadcasting rules, matrix math, array indexing.
-- **Pandas**: DataFrames, cleaning missing data, types, groupby aggregations, merges.
-- **Matplotlib & Seaborn**: Object-Oriented plotting, subplots, statistical distributions, heatmaps.
-- **Scikit-Learn**: Estimator design, preprocessing scalers/encoders, `ColumnTransformer`, `Pipeline`, model evaluation & hyperparameter tuning.
-- **Practical Workflows**: Step-by-step EDA checklist and an end-to-end runnable tabular ML pipeline template.
-- **Debugging Guide**: The top 10 most common runtime errors and pitfalls with immediate fixes.
+## What is in it
+
+| Part | Folder | Pages | Data |
+|------|--------|-------|------|
+| Start here | `docs/getting-started/` | How to use the site, learning path, the datasets, environment setup | |
+| A. The ML project lifecycle | `docs/lifecycle/` | 14: framing, validation, cleaning, EDA, splitting, baselines, features, modelling, evaluation, tuning, interpretation, serving, monitoring, reproducibility | Online Retail II (one running project) |
+| B/C. Toolkit | `docs/toolkit/` | 13: NumPy, pandas, Matplotlib/Seaborn, scikit-learn | Retail, Airbnb, MovieLens, NYC taxi, credit default |
+| D. Time series | `docs/timeseries/` | 8: decomposition, baselines, classical and ML forecasting, backtesting, metrics, holidays, regime change | NYC taxi demand |
+| Resources | `docs/workflows/`, `docs/resources/` | EDA checklist, end-to-end pipeline, common errors, links | |
+
+Planned: recommender systems, exercises and projects. See [`PLAN.md`](PLAN.md) for the roadmap and what is done.
 
 ---
 
-## Quickstart: Running Locally
+## For students
 
-### 1. Clone the repository
+You do not need to install anything to read the course. To run the notebooks:
+
+- **In Colab:** every page has an "Open in Colab" badge at the top. The first cell installs what it needs.
+- **Locally:**
+
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/sampriti-sr/MLP_Course.git
 cd MLP_Course
-```
-
-### 2. Set up virtual environment & install requirements
-```bash
 python3 -m venv .venv
-source .venv/bin/activate       # On Windows: .venv\Scripts\activate
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements-notebooks.txt
+jupyter lab docs/
+```
+
+Datasets are downloaded from their original publishers the first time a notebook needs them and cached in `~/.cache/mlp_course`. Sizes, licences and caveats are in [`data/README.md`](data/README.md).
+
+---
+
+## For instructors and contributors
+
+### Preview the site
+
+```bash
 pip install -r requirements.txt
+mkdocs serve                     # http://127.0.0.1:8000, reloads on save
 ```
 
-### 3. Start local live-reloading dev server
+### Add a page
+
+The notebooks in `docs/` are the pages (rendered by `mkdocs-jupyter`). Start from the template:
+
 ```bash
-mkdocs serve
+python tools/new_page.py docs/lifecycle/15-my-page.ipynb "My Page Title"
 ```
-Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your web browser. Any edits you make to the `.md` files in `docs/` will automatically refresh the browser in real time!
 
----
+Then add the file to `nav:` in `mkdocs.yml`. Authoring rules (callouts, exercises, how numbers in prose are checked against output) are in [`templates/AUTHORING.md`](templates/AUTHORING.md). Material syntax such as `!!!` and `===` does **not** work inside notebooks; use the HTML patterns in that guide. Plain `.md` pages (the older reference pages) can still use Material syntax.
 
-## Deploying to GitHub Pages (Free Hosting)
+### Check your work
 
-### Method 1: Automatic via GitHub Actions (Recommended)
-This repository includes `.github/workflows/deploy.yml`. 
-1. Push this repo to GitHub (`main` branch).
-2. Go to your repository settings on GitHub: **Settings > Pages > Build and deployment**.
-3. Under **Source**, select **GitHub Actions** (or `gh-pages` branch if deploying manually).
-4. Every push to `main` will build and publish your course website automatically!
-
-### Method 2: One-Command CLI Deployment
-With your virtual environment active and Git configured:
 ```bash
-mkdocs gh-deploy
+pytest -q                                          # offline unit tests for mlp_data
+python tools/execute_notebooks.py --lint           # static checks, no kernel
+python tools/execute_notebooks.py --check          # run every notebook from scratch (downloads data)
+python tools/execute_notebooks.py --write docs/lifecycle/03-cleaning.ipynb   # run and save outputs
+mkdocs build --strict                              # a warning fails the build
 ```
 
----
+The site build never runs code: outputs are saved inside the notebooks by `--write`, so re-run and commit a notebook after changing it. CI (`.github/workflows/notebooks.yml`) runs all of the above on every push and pull request.
 
-## Repository Directory Structure
+### Retarget the Colab links when merging
+
+Colab and install links name a git ref (currently the working branch). When merging to `main`:
+
+```bash
+python tools/execute_notebooks.py --ref main --write-ref
+```
+
+### Deploy
+
+`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main`. In the repository settings, set **Pages > Source** to the `gh-pages` branch. Manual deploy: `mkdocs gh-deploy`.
+
+### Repository layout
 
 ```text
 MLP_Course/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml              # CI/CD automated deployment
-├── mkdocs.yml                      # MkDocs Material theme & site configuration
-├── requirements.txt                # Python documentation dependencies
-├── README.md                       # Instructor & student guide
-└── docs/                           # Markdown content files
-    ├── index.md                    # Course portal homepage
-    ├── getting-started/
-    │   ├── environment-setup.md    # venv, conda, VS Code, health-check script
-    │   └── quickstart-cheatsheet.md# 1-page survival cheatsheet & golden rules
-    ├── libraries/
-    │   ├── numpy/
-    │   │   ├── index.md            # ndarray architecture, memory layout
-    │   │   ├── arrays-indexing.md  # Creation, slicing, boolean masking, reshape
-    │   │   └── vectorization-math.md # Broadcasting, axis stats, matrix multiplication
-    │   ├── pandas/
-    │   │   ├── index.md            # Series/DataFrame, .loc vs .iloc, SettingWithCopy
-    │   │   ├── data-cleaning.md    # Missing values, type fixing, duplicates, filtering
-    │   │   └── manipulation.md     # GroupBy named agg, merge, concat, pivot
-    │   ├── visualization/
-    │   │   ├── matplotlib.md       # Figure vs Axes OO interface, subplots, export
-    │   │   └── seaborn.md          # Distributions, pairplots, correlation & CM heatmaps
-    │   └── scikit-learn/
-    │       ├── index.md            # Estimators, Transformers, Predictors API design
-    │       ├── preprocessing.md    # Scalers (Standard/MinMax/Robust), Encoders, Imputers
-    │       ├── pipelines.md        # ColumnTransformer, leak-free Pipelines, CV tuning
-    │       ├── models.md           # Model taxonomy (Linear, Trees, Ensembles, SVM, KNN)
-    │       └── evaluation-tuning.md# Stratified splits, ROC-AUC, F1, Grid/Random Search
-    ├── workflows/
-    │   ├── eda-checklist.md        # 7-step rigorous EDA workflow
-    │   └── end-to-end-ml.md        # Full runnable tabular pipeline template with joblib export
-    ├── resources/
-    │   ├── common-errors.md        # Top 10 runtime & logic errors with fixes
-    │   └── external-links.md       # Official docs, printable cheatsheets, visualizers
-    └── stylesheets/
-        └── extra.css               # Clean typography, badge, and card styles
+├── docs/                    # the site: notebooks (.ipynb) and a few .md pages
+│   ├── getting-started/  lifecycle/  toolkit/  timeseries/  workflows/  resources/
+│   ├── stylesheets/extra.css
+│   └── javascripts/mathjax.js
+├── mlp_data/                # tested helper package used by the notebooks
+│   ├── loaders.py           #   one-line, cached dataset loaders
+│   ├── retail.py            #   cleaning, snapshots and splits for Online Retail II
+│   ├── timeseries.py  forecasting.py   # taxi demand, baselines, backtesting
+│   └── metrics.py  models.py  pipeline.py  tracking.py  serving.py  style.py
+├── tests/                   # offline unit tests
+├── tools/                   # execute_notebooks.py, new_page.py
+├── templates/               # page template and AUTHORING.md
+├── data/README.md           # dataset audit: URLs, licences, checksums
+├── mkdocs.yml
+├── requirements.txt         # to build the site
+├── requirements-notebooks.txt  # to run the notebooks and checks
+└── PLAN.md                  # roadmap and decisions
 ```
-
----
-
-## Adding New Topics or Lab Assignments
-
-To add a new lecture or lab module:
-1. Create a new markdown file inside `docs/` (e.g., `docs/labs/lab-01-data-cleaning.md`).
-2. Add the path to `mkdocs.yml` under the `nav:` section.
-3. Save the file; `mkdocs serve` will reload instantly.
