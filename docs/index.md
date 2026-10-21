@@ -41,6 +41,13 @@ flowchart TD
 
 <div class="card" markdown="1">
 
+<h3 markdown="span"><a href="recsys/01-framing/">:material-thumb-up-outline:{ .mlp-icon } Recommender Systems</a></h3>
+<p>Recommend movies and retail products: honest time-based splits, ranking metrics, neighbourhood and factorisation models, implicit feedback, cold start, popularity bias and two-stage ranking.</p>
+
+</div>
+
+<div class="card" markdown="1">
+
 <h3 markdown="span"><a href="toolkit/numpy-arrays/">:material-matrix:{ .mlp-icon } NumPy Reference</a></h3>
 <p>High-performance n-dimensional array computing, memory layouts, vectorized arithmetic, broadcasting mechanics, and linear algebra operations.</p>
 

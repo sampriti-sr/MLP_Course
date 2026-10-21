@@ -12,9 +12,10 @@ Live site: <https://sampriti-sr.github.io/MLP_Course/>
 | A. The ML project lifecycle | `docs/lifecycle/` | 14: framing, validation, cleaning, EDA, splitting, baselines, features, modelling, evaluation, tuning, interpretation, serving, monitoring, reproducibility | Online Retail II (one running project) |
 | B/C. Toolkit | `docs/toolkit/` | 13: NumPy, pandas, Matplotlib/Seaborn, scikit-learn | Retail, Airbnb, MovieLens, NYC taxi, credit default |
 | D. Time series | `docs/timeseries/` | 8: decomposition, baselines, classical and ML forecasting, backtesting, metrics, holidays, regime change | NYC taxi demand |
+| E. Recommender systems | `docs/recsys/` | 9: framing, splitting and metrics, baselines, neighbourhood methods, factorisation, implicit retail, cold start, beyond accuracy, two-stage | MovieLens, Online Retail II |
 | Resources | `docs/workflows/`, `docs/resources/` | EDA checklist, end-to-end pipeline, common errors, links | |
 
-Planned: recommender systems, exercises and projects. See [`PLAN.md`](PLAN.md) for the roadmap and what is done.
+Planned: exercises and projects, a capstone. See [`PLAN.md`](PLAN.md) for the roadmap and what is done.
 
 ---
 
@@ -95,13 +96,14 @@ python tools/execute_notebooks.py --ref main --write-ref
 ```text
 MLP_Course/
 ├── docs/                    # the site: notebooks (.ipynb) and a few .md pages
-│   ├── getting-started/  lifecycle/  toolkit/  timeseries/  workflows/  resources/
+│   ├── getting-started/  lifecycle/  toolkit/  timeseries/  recsys/  workflows/  resources/
 │   ├── stylesheets/extra.css
 │   └── javascripts/mathjax.js
 ├── mlp_data/                # tested helper package used by the notebooks
 │   ├── loaders.py           #   one-line, cached dataset loaders
 │   ├── retail.py            #   cleaning, snapshots and splits for Online Retail II
 │   ├── timeseries.py  forecasting.py   # taxi demand, baselines, backtesting
+│   ├── recsys.py            #   splits, ranking metrics, kNN / SVD / ALS models, cold-start and diversity helpers
 │   └── metrics.py  models.py  pipeline.py  tracking.py  serving.py  style.py
 ├── tests/                   # offline unit tests
 ├── tools/                   # execute_notebooks.py, new_page.py

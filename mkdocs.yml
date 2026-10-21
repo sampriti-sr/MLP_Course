@@ -128,6 +128,16 @@ nav:
       - 6. Backtesting: timeseries/06-backtesting.ipynb
       - 7. Metrics and Prediction Intervals: timeseries/07-metrics-intervals.ipynb
       - 8. Holidays and Regime Change: timeseries/08-holidays-regime-change.ipynb
+  - Recommender Systems:
+      - 1. Framing the Problem: recsys/01-framing.ipynb
+      - 2. Splitting and Ranking Metrics: recsys/02-split-and-metrics.ipynb
+      - 3. Baselines: recsys/03-baselines.ipynb
+      - 4. Neighbourhood Methods: recsys/04-neighbourhood.ipynb
+      - 5. Matrix Factorisation: recsys/05-factorisation.ipynb
+      - 6. Implicit Feedback on Retail: recsys/06-implicit-retail.ipynb
+      - 7. Cold Start: recsys/07-cold-start.ipynb
+      - 8. Beyond Accuracy: recsys/08-beyond-accuracy.ipynb
+      - 9. Two-Stage Recommenders: recsys/09-two-stage.ipynb
   - NumPy:
       - Arrays and Indexing: toolkit/numpy-arrays.ipynb
       - Vectorisation and Linear Algebra: toolkit/numpy-vectorisation.ipynb
