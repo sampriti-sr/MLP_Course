@@ -106,3 +106,17 @@
   scrollbar-width: thin;
   scrollbar-gutter: stable;
 }
+
+/* Notebook result tables: wrap long cells (paired intervals, titles) so every column stays visible. The table's
+   scroll container hides its scrollbar on macOS and phones, so a clipped column looks like missing data. */
+.jp-RenderedHTMLCommon table.dataframe {
+  font-size: 0.72rem;
+  width: 100%;
+}
+
+.jp-RenderedHTMLCommon table.dataframe th,
+.jp-RenderedHTMLCommon table.dataframe td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding: 0.3em 0.5em;
+}
