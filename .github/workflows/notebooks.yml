@@ -48,4 +48,4 @@ jobs:
         run: python tools/execute_notebooks.py --check
 
       - name: Build the site
-        run: mkdocs build
+        run: mkdocs build --strict
