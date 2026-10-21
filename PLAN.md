@@ -16,7 +16,7 @@
 
 | Phase | Status | Notes |
 |---|---|---|
-| 0. Quick fixes | **Not started** | polyfill.io is still in `mkdocs.yml`; repo URL, README and CSS fixes pending. `mkdocs<2` pin was pulled forward into Phase 1. |
+| 0. Quick fixes | **Done** (except 0.8 LICENSE) | polyfill.io removed; site/repo/edit URLs set; README rewritten; docs requirements pinned; notebook code wraps and Mermaid charts readable; CI builds with `--strict`; CONTRIBUTING added. **LICENSE not added: the licence choice (code and content) is the owner's decision.** |
 | 1. Foundations | **Done** (branch `kshitij-variant`) | See below. |
 | 2. Lifecycle (Part A) | **Done** (14 pages) | See below. |
 | 3. Toolkit (Parts B/C) | **Done** (12 pages) | NumPy 2, pandas 3, plotting 2, scikit-learn 6, all on real data. |
