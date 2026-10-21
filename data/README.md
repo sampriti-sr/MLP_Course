@@ -79,10 +79,29 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 | `yellow_tripdata_2020-05.parquet` | `f6167e3c8f1039ec4015cb121e73f8e08710ad1681da747f2b5aa504008cf289` |
 | `london/2026-09-17/listings.csv.gz` | `8017870734a9bffa1b424937372e5f02f8c4a114e5060534d7423be5fd718b4c` |
 
+## Mirror (link-rot protection)
+
+`mlp_data._download.fetch` accepts ordered fallback `mirrors`. If the publisher's URL fails, each mirror is tried; **a mirror must match the pinned SHA-256 exactly** or it is rejected (the publisher's own file only triggers a warning, because a changed file there is news; a third-party host swapping a file is an attack). Mirrors therefore require a pinned checksum. Ten offline tests in `tests/test_download.py` cover the fallback, the rejection and the error messages.
+
+| Dataset | Mirrored? | Why |
+|---|---|---|
+| `airbnb` | **Yes**, GitHub Release `data-v1` | Snapshots rotate, so the pinned URL will 404. CC BY 4.0 allows redistribution with attribution (credit "Inside Airbnb"). |
+| `taxi` | **No** | TLC states no licence, so we never redistribute it (see open item 1). |
+| `retail`, `credit` | No | Stable UCI URLs with DOIs. Revisit if UCI moves them. (CC BY 4.0, so a mirror would be allowed.) |
+| `movielens` | No | Stable GroupLens URL. Redistribution is allowed only under the same non-commercial terms. |
+
+**Publishing the Airbnb mirror (maintainer, one-off).** The asset is the original file, byte for byte, never a re-export:
+
+1. Get the file: `python -c "import mlp_data; mlp_data.load_airbnb()"` caches it at `~/.cache/mlp_course/raw/airbnb_london_2026-09-17_listings.csv.gz` (48.3 MB). Check `shasum -a 256` against the table above.
+2. On GitHub, **Releases > Draft a new release**, tag `data-v1`, attach that file with exactly that name, and put in the notes: *"Inside Airbnb, London listings, snapshot 2026-09-17, CC BY 4.0, https://insideairbnb.com. Unmodified copy, mirrored so the course keeps working after the original snapshot is removed."*
+3. Verify from a clean machine: `MLP_DATA_DIR=$(mktemp -d) python -c "import mlp_data.loaders as l; l._AIRBNB_URL = 'https://invalid.example/{snapshot}'; print(l.load_airbnb().shape)"` should print `(91954, 90)` after saying it is using the course mirror.
+
+When a new snapshot is adopted, bump `AIRBNB_SNAPSHOT`, record its checksum, and publish a new `data-vN` release; the old tag stays so old versions of the course keep working.
+
 ## Open items for the maintainers
 
 1. **TLC reuse terms**: confirm via NYC Open Data before we ship any derived/sampled copy.
-2. **Mirror** Airbnb (and optionally retail parquet) as a GitHub Release asset to remove link-rot and the 35 s xlsx parse. Needs a decision on repo storage and attribution text.
+2. **Mirror (code done, upload pending)**: see the *Mirror* section below. Until the release asset is uploaded, the mirror URL returns 404 and the loader behaves exactly as before.
 3. **Taxi months (done)**: the time-series track uses 2023-01 to 2023-03 and 2020-01 to 2020-05; checksums are recorded above.
 3b. **Weather**: forecast-aware exogenous variables need a licence-audited source with *archived forecasts*; none is audited yet, so the track has no weather feature.
 4. **Credit-default alternative**: if Taiwan-2005 is judged too dated, evaluate a more recent public credit/fraud dataset.

@@ -21,6 +21,7 @@
 | 2. Lifecycle (Part A) | **Done** (14 pages) | See below. |
 | 3. Toolkit (Parts B/C) | **Done** (12 pages) | NumPy 2, pandas 3, plotting 2, scikit-learn 6, all on real data. |
 | 4. Time series (Part D) | **Done** (8 pages) | NYC taxi, hourly demand, Jan-Mar 2023 (+ Jan-May 2020 for the regime change). |
+| Data mirror (from the post-Phase-4 review) | **Code done, upload pending** | `fetch()` falls back to checksum-verified mirrors; Airbnb loader points at GitHub Release `data-v1`, which still has to be created by a maintainer (steps in `data/README.md`). Taxi is deliberately not mirrored (no licence). |
 | 5-7 | Not started | Recommenders (MovieLens + retail), exercises/projects, release. |
 
 **Phase 1 outcomes**
