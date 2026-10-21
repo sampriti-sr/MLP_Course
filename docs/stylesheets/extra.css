@@ -67,3 +67,56 @@
   margin-top: 0;
   color: var(--md-primary-fg-color);
 }
+
+/* Inline Material icons used in headings and cards (replace emoji) */
+.md-typeset .mlp-icon {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset h2 .mlp-icon,
+.md-typeset h3 .mlp-icon {
+  height: 1.05em;
+  width: 1.05em;
+  margin-right: 0.35em;
+  vertical-align: -0.12em;
+}
+
+.md-typeset h2 .mlp-icon svg,
+.md-typeset h3 .mlp-icon svg {
+  height: 100%;
+  width: 100%;
+  fill: currentColor;
+}
+
+.card h3 a {
+  color: inherit;
+}
+
+/* Notebook code cells: wrap long lines instead of scrolling. Overlay scrollbars (macOS, phones) are
+   invisible, so a scrolling cell looks like clipped code and students cannot tell more is there. */
+.jp-Notebook .highlight-ipynb pre,
+.jp-Notebook .CodeMirror pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Static code blocks in the Markdown pages keep scrolling (wrapping would break indentation), but
+   make the scrollbar always visible so the extra width is discoverable. */
+.md-typeset pre > code {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+
+/* Notebook result tables: wrap long cells (paired intervals, titles) so every column stays visible. The table's
+   scroll container hides its scrollbar on macOS and phones, so a clipped column looks like missing data. */
+.jp-RenderedHTMLCommon table.dataframe {
+  font-size: 0.72rem;
+  width: 100%;
+}
+
+.jp-RenderedHTMLCommon table.dataframe th,
+.jp-RenderedHTMLCommon table.dataframe td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding: 0.3em 0.5em;
+}

@@ -20,6 +20,10 @@ _RETAIL_XLSX_SHA = "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2
 
 _ML_URL = "https://files.grouplens.org/datasets/movielens/ml-latest-small.zip"
 _ML_SHA = "696d65a3dfceac7c45750ad32df2c259311949efec81f0f144fdfb91ebc9e436"
+# files.grouplens.org serves a certificate chain that ends at a root (emSign ECC Root CA - G3) missing from
+# Mozilla's bundle (certifi), so Python can fail TLS verification where the OS trust store would not (seen on
+# macOS with certifi). Verification is never disabled; instead a copy pinned by SHA-256 is the fallback.
+_ML_MIRROR = "https://github.com/sampriti-sr/MLP_Course/releases/download/data-v1/ml-latest-small.zip"
 
 _TAXI_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month}.parquet"
 _TAXI_SHA = {
@@ -37,6 +41,13 @@ AIRBNB_SNAPSHOT = "2026-09-17"
 _AIRBNB_URL = (
     "https://data.insideairbnb.com/united-kingdom/england/london/"
     "{snapshot}/data/listings.csv.gz"
+)
+# Inside Airbnb deletes old snapshots, so the pinned URL will eventually 404. CC BY 4.0 allows a
+# copy with attribution; the exact pinned file is kept as a release asset. _download.fetch only
+# accepts it if the SHA-256 below matches. See data/README.md ("Mirror") for how it is published.
+_AIRBNB_MIRROR = (
+    "https://github.com/sampriti-sr/MLP_Course/releases/download/data-v1/"
+    "airbnb_london_{snapshot}_listings.csv.gz"
 )
 _AIRBNB_SHA = {"2026-09-17": "8017870734a9bffa1b424937372e5f02f8c4a114e5060534d7423be5fd718b4c"}
 
@@ -83,7 +94,8 @@ def load_movielens() -> MovieLens:
 
     Non-commercial use only; see the GroupLens terms in data/README.md.
     """
-    zpath = fetch(_ML_URL, _raw("ml-latest-small.zip"), sha256=_ML_SHA, label="MovieLens small")
+    zpath = fetch(_ML_URL, _raw("ml-latest-small.zip"), sha256=_ML_SHA, label="MovieLens small",
+                  mirrors=[_ML_MIRROR])
     tables = {}
     with zipfile.ZipFile(zpath) as zf:
         for name in ("ratings", "movies", "links", "tags"):
@@ -116,7 +128,8 @@ def load_airbnb() -> pd.DataFrame:
     Attribution: Inside Airbnb (CC BY 4.0).
     """
     path = fetch(_AIRBNB_URL.format(snapshot=AIRBNB_SNAPSHOT), _raw(f"airbnb_london_{AIRBNB_SNAPSHOT}_listings.csv.gz"),
-                 sha256=_AIRBNB_SHA.get(AIRBNB_SNAPSHOT), label=f"Inside Airbnb London {AIRBNB_SNAPSHOT}")
+                 sha256=_AIRBNB_SHA.get(AIRBNB_SNAPSHOT), label=f"Inside Airbnb London {AIRBNB_SNAPSHOT}",
+                 mirrors=[_AIRBNB_MIRROR.format(snapshot=AIRBNB_SNAPSHOT)])
     return pd.read_csv(path, low_memory=False)
 
 

@@ -3,7 +3,7 @@
 The course is built around **one story told with real data**, then widened with two specialised tracks. Work through the parts in order. Each part says what you should be able to do before moving on.
 
 ```mermaid
-flowchart LR
+flowchart TD
     S["Start here<br/>Datasets"] --> A["Part A<br/>The ML lifecycle"]
     A --> C["Part C<br/>Classical ML in practice"]
     C --> D["Part D<br/>Time series"]
@@ -88,7 +88,19 @@ Forecast New York taxi demand, hour by hour, and find out which of the methods a
 
 ## Part E: Recommender systems *(MovieLens and retail)*
 
-Explicit vs implicit feedback · popularity and neighbourhood baselines · matrix factorisation · **ranking metrics and correct splitting** · cold start · beyond accuracy. **Status: planned.**
+Recommend ten movies per user and ten products per customer, test it honestly, and find out which of the methods beats "show everyone what is popular".
+
+| Step | Topic | Status |
+|---|---|---|
+| 1 | [Framing: sparse matrices, explicit and implicit feedback](../recsys/01-framing.ipynb) | Available |
+| 2 | [Splitting and ranking metrics: leakage, sampled metrics, paired intervals](../recsys/02-split-and-metrics.ipynb) | Available |
+| 3 | [Baselines: popularity and item-item similarity](../recsys/03-baselines.ipynb) | Available |
+| 4 | [Neighbourhood methods and the rating trap](../recsys/04-neighbourhood.ipynb) | Available |
+| 5 | [Matrix factorisation: SVD and ALS](../recsys/05-factorisation.ipynb) | Available |
+| 6 | [Implicit feedback on retail purchases](../recsys/06-implicit-retail.ipynb) | Available |
+| 7 | [Cold start and content features](../recsys/07-cold-start.ipynb) | Available |
+| 8 | [Beyond accuracy: coverage, popularity bias, who is served](../recsys/08-beyond-accuracy.ipynb) | Available |
+| 9 | [Two-stage retrieval and ranking](../recsys/09-two-stage.ipynb) | Available |
 
 **Ready to move on when** you can build a recommender, evaluate it with ranking metrics on a leak-free split, and say what it recommends *too much* of.
 

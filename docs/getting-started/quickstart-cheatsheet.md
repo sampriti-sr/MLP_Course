@@ -4,7 +4,7 @@ A concise, single-page reference for common imports, data loading, basic model t
 
 ---
 
-## 📌 Standard Library Import Conventions
+## :material-pin-outline:{ .mlp-icon } Standard Library Import Conventions
 
 Always adhere to standard community naming conventions:
 
@@ -24,7 +24,7 @@ from sklearn.metrics import classification_report, mean_squared_error, r2_score
 
 ---
 
-## ⚡ 60-Second Machine Learning Pipeline
+## :material-timer-outline:{ .mlp-icon } 60-Second Machine Learning Pipeline
 
 ```python
 import pandas as pd
@@ -73,7 +73,7 @@ print(classification_report(y_test, y_pred))
 
 ---
 
-## 🧠 The 4 Golden Rules of Machine Learning Practice
+## :material-format-list-checks:{ .mlp-icon } The 4 Golden Rules of Machine Learning Practice
 
 !!! warning "Rule #1: Never fit transformers on test data!"
     Always `fit_transform()` on **`X_train`**, but only `transform()` on **`X_test`**. Using `fit` on test or full dataset causes **data leakage**, resulting in falsely optimistic validation scores that fail in production.

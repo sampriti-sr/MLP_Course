@@ -74,7 +74,7 @@ print(f"Scikit-Learn: {sklearn.__version__}")
 print(f"Matplotlib:   {matplotlib.__version__}")
 print(f"Seaborn:      {sns.__version__}")
 print("====================================")
-print("✅ Environment is ready for Machine Learning Practice!")
+print("Environment is ready for Machine Learning Practice!")
 ```
 
 Run:

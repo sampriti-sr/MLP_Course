@@ -16,12 +16,14 @@
 
 | Phase | Status | Notes |
 |---|---|---|
-| 0. Quick fixes | **Not started** | polyfill.io is still in `mkdocs.yml`; repo URL, README and CSS fixes pending. `mkdocs<2` pin was pulled forward into Phase 1. |
+| 0. Quick fixes | **Done** (except 0.8 LICENSE) | polyfill.io removed; site/repo/edit URLs set; README rewritten; docs requirements pinned; notebook code wraps and Mermaid charts readable; CI builds with `--strict`; CONTRIBUTING added. **LICENSE not added: the licence choice (code and content) is the owner's decision.** |
 | 1. Foundations | **Done** (branch `kshitij-variant`) | See below. |
 | 2. Lifecycle (Part A) | **Done** (14 pages) | See below. |
 | 3. Toolkit (Parts B/C) | **Done** (12 pages) | NumPy 2, pandas 3, plotting 2, scikit-learn 6, all on real data. |
 | 4. Time series (Part D) | **Done** (8 pages) | NYC taxi, hourly demand, Jan-Mar 2023 (+ Jan-May 2020 for the regime change). |
-| 5-7 | Not started | Recommenders (MovieLens + retail), exercises/projects, release. |
+| Data mirror (from the post-Phase-4 review) | **Code done, upload pending** | `fetch()` falls back to checksum-verified mirrors; the Airbnb and MovieLens loaders point at GitHub Release `data-v1`, which still has to be created by a maintainer (steps in `data/README.md`). MovieLens needs it more than expected: `files.grouplens.org` fails TLS verification with certifi's CA bundle (found 2026-10-21). Taxi is deliberately not mirrored (no licence). |
+| 5. Recommenders (Part E) | **Done** (9 pages) | MovieLens small and Online Retail II. Page order changed from the plan: the split and ranking metrics are page 2 because every later page needs them. |
+| 6-7 | Not started | Exercises/projects and debugging guide v2, release. |
 
 **Phase 1 outcomes**
 
@@ -64,6 +66,23 @@ Supporting, tested code: `mlp_data.timeseries` (`taxi_hourly`, `taxi_hourly_by_z
 - Regime change: demand fell 96% in spring 2020. The 4-week average over-forecast ~9x for weeks; weekly copy and a level-adjusted forecaster were wrong by ~150-170% and recovered ~6 weeks sooner. An error alarm built from a calm baseline that includes a holiday fires on 13 March 2020 and not before.
 
 Honest limits recorded in the pages: three months cannot support a trend or yearly-seasonality claim; weather was *not* added (no audited source with archived forecasts, a new open item in `data/README.md`'s spirit); the ML pages could not tell how much more history would help with only 11 weeks.
+
+**Phase 5 outcomes (Part E, recommender systems: 9 notebooks in `docs/recsys/`)**
+
+Supporting, tested code: `mlp_data.recsys` (per-user and by-date splits, `make_task` and `make_purchase_task`, ranking metrics, beyond-accuracy metrics, paired intervals, popularity, kNN, PureSVD, biased explicit ALS, implicit ALS, fold-in, genre features; 32 tests). The pages, in order: framing; split and ranking metrics; baselines; neighbourhood methods; factorisation; implicit feedback on retail; cold start; beyond accuracy; two-stage retrieval and ranking. Every model comparison is a paired interval over users on a held-out later window; every hyper-parameter is tuned on a validation split inside the training data. What the data taught (asserted in the notebooks):
+
+- A random per-user split inflates popularity 2.1 times and item-item 3.0 times (a random list is unchanged, the control); 98.9% of its test ratings are older than a training rating from the same user. Sampled ranking (99 negatives) inflates hit rates 13 to 14 times.
+- A plain mean rating ranks like a random list (its top five are single-rating movies); a count of ratings is the best non-personalised baseline. A tuning gain of +0.017 on validation was +0.006 on test (a tie).
+- Neighbour predictions have a good RMSE and rank like a random list (97% of unseen pairs have almost no evidence behind them); shrinking toward the user mean fixes the ranking (+0.020 over the binary model) and leaves the RMSE no better than the user mean.
+- Explicit factorisation improves the bias baseline's RMSE by 0.006 stars and recommends movies with a median of one rating. **The training signal mattered more than the algorithm**: training on likes only added about 0.03 NDCG, and SVD, ALS and item-item then tie (0.115 to 0.121). ALS seeds differ by up to 0.006.
+- Retail: for repurchase, the customer's own history ranked by purchase count (0.325) beats every collaborative model; the same history as 0/1 scores 0.137, purely through ties. For discovery, ALS and item-item are about twice popularity on existing customers. The validation cutoff used (1 June 2011) was the only one of nine where recent popularity beat item-item.
+- Cold start: below about 10 ratings the personal models are worse than popularity, and a blend weighted by profile size is the safe choice. 15% of movies have no training rating and hold 6.6% of the hits; genre content cannot be told from random on them, and each reserved slot costs about 0.005 NDCG.
+- Beyond accuracy: 98% to 100% of recommendation slots are in the most-rated tenth of movies, against 54.5% of the hits; a popularity penalty of 0.5 costs 2% of NDCG for 17% more coverage and coverage never passes about 7%.
+- Two-stage: the ranker ties the first stage (retrieval recall@100 is 38%, an oracle reordering would reach 0.60); a pooled AUC of 0.73 against 0.52 is mostly user-level features (67% of the importance); a ranker fitted on the test labels reports 0.19 against the honest 0.12.
+
+Defects found and fixed on the way: an input-mutation bug (`csr_matrix` without `copy`) with a regression test; NaN for unrated items in `damped_mean`; the retail comparison first scored customers with no history, for whom every collaborative model outputs zeros, which made popularity look better than it was for "short-history" customers (the pages now score existing customers and report newcomers separately).
+
+Honest limits: MovieLens small has 610 users, so intervals are wide; the new-user simulation splits users, not time; the ALS grids are small; MovieLens is ratings, not clicks; the cold-start page has only genres as content.
 
 **A defect found late, and fixed at the source.** Reading the final call list showed rank 1 was a customer whose GBP 77k order had been cancelled sixteen minutes later. Page 3 had tested only whether such orders flipped labels (they did not) and called them harmless; they distort *spend*, which a value-ranked list depends on. Fixed in `clean_retail` (step 6, with tests), and every page re-run and its prose corrected where a conclusion moved (the extra features' money gain and boosting's edge over the forest both disappeared; the model's lead over the rule shrank to "not demonstrable"). Lesson recorded on Page 3: *test a cleaning decision against every way the data is used.*
 

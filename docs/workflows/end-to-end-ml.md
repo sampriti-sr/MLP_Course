@@ -8,10 +8,10 @@ A complete, production-grade template for building a tabular classification mode
 
 ---
 
-## 🏗️ Architecture Blueprint
+## :material-sitemap-outline:{ .mlp-icon } Architecture Blueprint
 
 ```mermaid
-flowchart LR
+flowchart TD
     A["Raw DataFrame"] --> B["Train / Test Split"]
     B -->|X_train, y_train| C["Pipeline<br/>(Impute + Scale + OHE + Classifier)"]
     C --> D["GridSearchCV / Cross-Val"]
@@ -23,7 +23,7 @@ flowchart LR
 
 ---
 
-## 💻 Full Runnable Script
+## :material-language-python:{ .mlp-icon } Full Runnable Script
 
 ```python
 """

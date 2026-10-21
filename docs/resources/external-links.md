@@ -4,7 +4,7 @@ Curated links to official library documentation, downloadable PDF cheatsheets, a
 
 ---
 
-## 📖 Official Library Portals
+## :material-book-open-variant:{ .mlp-icon } Official Library Portals
 
 | Library | Official Documentation | API Reference |
 | :--- | :--- | :--- |
@@ -16,7 +16,7 @@ Curated links to official library documentation, downloadable PDF cheatsheets, a
 
 ---
 
-## 📑 Official Printable Cheat Sheets
+## :material-file-document-outline:{ .mlp-icon } Official Printable Cheat Sheets
 
 - **[NumPy Cheat Sheet (DataCamp)](https://www.datacamp.com/cheat-sheet/numpy-cheat-sheet-data-analysis-in-python)**: Array math, slicing, and shapes.
 - **[Pandas Cheat Sheet (Official)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf)**: Reshaping, subsetting, summarizing data.
@@ -25,7 +25,7 @@ Curated links to official library documentation, downloadable PDF cheatsheets, a
 
 ---
 
-## 🎮 Interactive Visualizers & Sandboxes
+## :material-flask-outline:{ .mlp-icon } Interactive Visualizers & Sandboxes
 
 - **[Scikit-Learn Example Gallery](https://scikit-learn.org/stable/auto_examples/index.html)**: Hundreds of real code recipes comparing decision boundaries, classifiers, and clustering.
 - **[Seeing Theory (Brown University)](https://seeing-theory.brown.edu/)**: Visual introduction to probability, Bayesian inference, and regression.

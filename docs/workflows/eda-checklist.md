@@ -8,7 +8,7 @@ Before training any model, follow this rigorous step-by-step EDA protocol to und
 
 ---
 
-## 📋 The 7-Step EDA Protocol
+## :material-clipboard-check-outline:{ .mlp-icon } The 7-Step EDA Protocol
 
 ```mermaid
 flowchart TD

@@ -12,11 +12,11 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 
 | Key | Dataset | Track | Download size | Rows × cols | Licence | Status |
 |---|---|---|---|---|---|---|
-| `retail` | UCI Online Retail II | Lifecycle, segmentation, forecasting, recsys | 45.6 MB (xlsx in zip) | 1,067,371 × 8 | CC BY 4.0 | ✅ verified |
-| `movielens` | MovieLens `ml-latest-small` | Recommender | 1.0 MB | 100,836 ratings | GroupLens terms (non-commercial; redistribution allowed under same terms) | ✅ verified |
-| `taxi` | NYC TLC Yellow Taxi, one file per month | Time series | ~47 MB per month | 3,066,766 × 19 (2023-01) | **No licence stated** by TLC (accuracy disclaimer only) | ⚠️ see note |
-| `airbnb` | Inside Airbnb, London `listings.csv.gz`, snapshot 2026-09-17 | Messy tabular regression | 48.3 MB | 91,954 × 90 | CC BY 4.0 | ✅ verified, snapshot rotates |
-| `credit` | UCI Default of Credit Card Clients (Taiwan, 2005) | Imbalanced classification, fairness | 5.5 MB (xls in zip) | 30,000 × 25 | CC BY 4.0 | ✅ verified |
+| `retail` | UCI Online Retail II | Lifecycle, segmentation, forecasting, recsys | 45.6 MB (xlsx in zip) | 1,067,371 × 8 | CC BY 4.0 | Verified |
+| `movielens` | MovieLens `ml-latest-small` | Recommender | 1.0 MB | 100,836 ratings | GroupLens terms (non-commercial; redistribution allowed under same terms) | Verified |
+| `taxi` | NYC TLC Yellow Taxi, one file per month | Time series | ~47 MB per month | 3,066,766 × 19 (2023-01) | **No licence stated** by TLC (accuracy disclaimer only) | See note |
+| `airbnb` | Inside Airbnb, London `listings.csv.gz`, snapshot 2026-09-17 | Messy tabular regression | 48.3 MB | 91,954 × 90 | CC BY 4.0 | Verified, snapshot rotates |
+| `credit` | UCI Default of Credit Card Clients (Taiwan, 2005) | Imbalanced classification, fairness | 5.5 MB (xls in zip) | 30,000 × 25 | CC BY 4.0 | Verified |
 
 ## Per-dataset notes
 
@@ -41,7 +41,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 
 ### `taxi`: NYC TLC Yellow Taxi
 - **Source:** <https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page> · files at `https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_YYYY-MM.parquet`
-- ⚠️ **Licence:** the TLC page states that TLC makes no representations as to accuracy and publishes no licence or reuse terms. The data is also published on NYC Open Data. **Open item:** confirm the Open Data terms before we rely on this for anything other than on-demand download (we never redistribute it, which keeps us safe either way).
+- **Licence:** the TLC page states that TLC makes no representations as to accuracy and publishes no licence or reuse terms. The data is also published on NYC Open Data. **Open item:** confirm the Open Data terms before we rely on this for anything other than on-demand download (we never redistribute it, which keeps us safe either way).
 - **Verified messiness (2023-01):** 48 trips with pickup outside the month (earliest 2008-12-31); 25,049 negative `fare_amount`; 45,862 zero-distance trips; 71,743 null `passenger_count`. The TLC page warns the parquet schema may be standardised across years, so **pin the months we use** and verify columns.
 - **Verified URLs:** 2023-01, 2023-02 and 2024-01 all resolve (HTTP 200). For the time-series track (Phase 4) we also use 2023-02, 2023-03 and 2020-01 to 2020-05 (all HTTP 200; checksums below, recorded on first download, 2026-10-16). `mlp_data.timeseries.taxi_hourly` reads only the pickup-time column and caches hourly counts.
 - **Time-series facts (verified):** in 2023-01 to 2023-03 exactly one hourly slot is empty, 02:00 on 2023-03-12 (daylight-saving change; timestamps are naive local time). 2020 months shrink from 6.4 M trips (Jan) to 0.24 M (Apr).
@@ -49,7 +49,7 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 ### `airbnb`: Inside Airbnb, London
 - **Source:** <https://insideairbnb.com/get-the-data/> · `…/london/2026-09-17/data/listings.csv.gz`
 - **Licence:** CC BY 4.0 (stated on the site). Credit "Inside Airbnb".
-- ⚠️ **Link rot:** the site keeps only roughly the last year of snapshots, so the pinned URL **will** eventually 404. Policy: pin one snapshot per release; the loader raises a clear error pointing to the data-request page. A mirror (GitHub Release asset, permitted by CC BY with attribution) is the long-term fix; see open items.
+- **Link rot:** the site keeps only roughly the last year of snapshots, so the pinned URL **will** eventually 404. Policy: pin one snapshot per release; the loader raises a clear error pointing to the data-request page. A mirror (GitHub Release asset, permitted by CC BY with attribution) is the long-term fix; see open items.
 - **Verified messiness:** `price` is a *string* (with currency symbol) and **34.9 % null**; `review_scores_rating` 22.5 % null; 90 columns including free text (`description`, `amenities`) and coordinates.
 - **Note:** the `visualisations/listings.csv` (summary) variant returned HTTP 403 when requested directly. Use the full `data/listings.csv.gz`.
 
@@ -79,10 +79,30 @@ Maintainer-facing record of every dataset the course uses: where it comes from, 
 | `yellow_tripdata_2020-05.parquet` | `f6167e3c8f1039ec4015cb121e73f8e08710ad1681da747f2b5aa504008cf289` |
 | `london/2026-09-17/listings.csv.gz` | `8017870734a9bffa1b424937372e5f02f8c4a114e5060534d7423be5fd718b4c` |
 
+## Mirror (link-rot protection)
+
+`mlp_data._download.fetch` accepts ordered fallback `mirrors`. If the publisher's URL fails, each mirror is tried; **a mirror must match the pinned SHA-256 exactly** or it is rejected (the publisher's own file only triggers a warning, because a changed file there is news; a third-party host swapping a file is an attack). Mirrors therefore require a pinned checksum. Ten offline tests in `tests/test_download.py` cover the fallback, the rejection and the error messages.
+
+| Dataset | Mirrored? | Why |
+|---|---|---|
+| `airbnb` | **Yes**, GitHub Release `data-v1` | Snapshots rotate, so the pinned URL will 404. CC BY 4.0 allows redistribution with attribution (credit "Inside Airbnb"). |
+| `taxi` | **No** | TLC states no licence, so we never redistribute it (see open item 1). |
+| `retail`, `credit` | No | Stable UCI URLs with DOIs. Revisit if UCI moves them. (CC BY 4.0, so a mirror would be allowed.) |
+| `movielens` | **Yes (code done, asset pending)**, same `data-v1` release | **Found 2026-10-21:** `files.grouplens.org` sends a certificate chain ending at the root *emSign ECC Root CA - G3*, which is in the macOS trust store but not in Mozilla's bundle (certifi), so Python's TLS verification fails with the current certifi (`openssl s_client -CAfile certifi/cacert.pem` returns code 20, certifi 2026.10.19) while `curl` on a Mac works. CI was still green on 2026-10-16, so the chain may have changed since; the next CI run will show whether Linux is affected too. We never disable verification; a SHA-256-pinned copy is the fallback. GroupLens permits redistribution under the same terms (non-commercial, cite Harper & Konstan 2015), so the release notes must say so. |
+
+**Publishing the Airbnb mirror (maintainer, one-off).** The asset is the original file, byte for byte, never a re-export:
+
+0. **MovieLens too:** upload `ml-latest-small.zip` (978,202 bytes, SHA-256 `696d65a3dfceac7c45750ad32df2c259311949efec81f0f144fdfb91ebc9e436`) to the same release, unmodified, with this line in the notes: *"MovieLens ml-latest-small, GroupLens Research, University of Minnesota. Unmodified copy. Non-commercial use only; cite F. M. Harper and J. A. Konstan, The MovieLens Datasets: History and Context, ACM TiiS 5(4), 2015."*
+1. Get the file: `python -c "import mlp_data; mlp_data.load_airbnb()"` caches it at `~/.cache/mlp_course/raw/airbnb_london_2026-09-17_listings.csv.gz` (48.3 MB). Check `shasum -a 256` against the table above.
+2. On GitHub, **Releases > Draft a new release**, tag `data-v1`, attach that file with exactly that name, and put in the notes: *"Inside Airbnb, London listings, snapshot 2026-09-17, CC BY 4.0, https://insideairbnb.com. Unmodified copy, mirrored so the course keeps working after the original snapshot is removed."*
+3. Verify from a clean machine: `MLP_DATA_DIR=$(mktemp -d) python -c "import mlp_data.loaders as l; l._AIRBNB_URL = 'https://invalid.example/{snapshot}'; print(l.load_airbnb().shape)"` should print `(91954, 90)` after saying it is using the course mirror.
+
+When a new snapshot is adopted, bump `AIRBNB_SNAPSHOT`, record its checksum, and publish a new `data-vN` release; the old tag stays so old versions of the course keep working.
+
 ## Open items for the maintainers
 
 1. **TLC reuse terms**: confirm via NYC Open Data before we ship any derived/sampled copy.
-2. **Mirror** Airbnb (and optionally retail parquet) as a GitHub Release asset to remove link-rot and the 35 s xlsx parse. Needs a decision on repo storage and attribution text.
+2. **Mirror (code done, upload pending)**: see the *Mirror* section below. Until the release asset is uploaded, the mirror URL returns 404 and the loader behaves exactly as before.
 3. **Taxi months (done)**: the time-series track uses 2023-01 to 2023-03 and 2020-01 to 2020-05; checksums are recorded above.
 3b. **Weather**: forecast-aware exogenous variables need a licence-audited source with *archived forecasts*; none is audited yet, so the track has no weather feature.
 4. **Credit-default alternative**: if Taiwan-2005 is judged too dated, evaluate a more recent public credit/fraud dataset.
