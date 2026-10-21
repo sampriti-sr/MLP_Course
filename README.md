@@ -47,6 +47,15 @@ pip install -r requirements.txt
 mkdocs serve                     # http://127.0.0.1:8000, reloads on save
 ```
 
+### Tested with
+
+| What | Versions |
+|------|----------|
+| Site build (`requirements.txt`) | mkdocs 1.6.1, mkdocs-material 9.7.7, mkdocs-jupyter 0.26.3, pymdown-extensions 12.3; a fresh venv builds with `mkdocs build --strict` |
+| Notebooks | pandas 2.3 and 3.0 (both exercised); Python 3.11 in CI |
+
+`requirements.txt` uses `~=` ranges on these versions, so patch updates are accepted but the next major version is not. `requirements-notebooks.txt` still uses open lower bounds; the CI run on every push is what tells us when a new release breaks a page.
+
 ### Add a page
 
 The notebooks in `docs/` are the pages (rendered by `mkdocs-jupyter`). Start from the template:
